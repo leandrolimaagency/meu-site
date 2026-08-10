@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Confirme o Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="card">
+      <div class="pad">
+        <div class="pill pill--live"><span class="dot"></span> PASSO 2 DE 2</div>
+        <h1 class="title">Confirme o Instagram</h1>
+        <p class="subtitle">Encontramos o perfil abaixo. Confirme para iniciar a análise em tempo real.</p>
+
+        <div class="loader" id="loader">
+          <span class="spinner"></span>
+          <span>Localizando perfil...</span>
+        </div>
+
+        <div id="profile-area" class="hidden">
+          <div class="profile">
+            <img class="profile__avatar" id="avatar" alt="Foto de perfil" referrerpolicy="no-referrer" src="assets/img/avatar-placeholder.svg" />
+            <div>
+              <h3 id="display-name">—</h3>
+              <p id="handle">@—</p>
+              <div class="metrics">
+                <div class="metric"><strong id="m-posts">—</strong><span>posts</span></div>
+                <div class="metric"><strong id="m-followers">—</strong><span>seguidores</span></div>
+                <div class="metric"><strong id="m-following">—</strong><span>seguindo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn--primary" id="confirm" type="button">Confirmar</button>
+          <button class="btn btn--ghost" id="back" type="button" style="margin-top:10px">Não é esse perfil</button>
+
+          <p class="footer-note" id="fallback-note" style="display:none">
+            Não conseguimos carregar a prévia pública agora — mas a análise segue normalmente.
+          </p>
+        </div>
+
+        <div id="notfound-area" class="hidden">
+          <div class="profile" style="border-color:rgba(255,74,91,.4)">
+            <img class="profile__avatar" alt="" src="assets/img/avatar-placeholder.svg" style="border-color:rgba(255,74,91,.5)" />
+            <div>
+              <h3>Usuário inexistente</h3>
+              <p>Não encontramos <b id="nf-handle">@—</b> no Instagram. Verifique o @ e tente novamente.</p>
+            </div>
+          </div>
+          <button class="btn btn--primary" id="retry" type="button">Tentar outro @</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      F.armBackRedirect();
+
+      var username = F.getUsername();
+      if (!username) { window.location.href = "usuario.html"; return; }
+
+      F.fetchProfile(username).then(function (p) {
+        document.getElementById("loader").classList.add("hidden");
+
+        // Perfil não existe -> tela de "usuário inexistente".
+        if (p.status === "notfound") {
+          document.getElementById("nf-handle").textContent = "@" + (p.username || username);
+          document.getElementById("notfound-area").classList.remove("hidden");
+          return;
+        }
+
+        // Preenche o card. Handle sempre via textContent (nunca innerHTML).
+        document.getElementById("display-name").textContent = p.displayName || p.username;
+        document.getElementById("handle").textContent = "@" + p.username;
+        document.getElementById("m-posts").textContent = p.posts;
+        document.getElementById("m-followers").textContent = p.followers;
+        document.getElementById("m-following").textContent = p.following;
+
+        var avatar = document.getElementById("avatar");
+        avatar.onerror = function () { avatar.src = F.AVATAR_FALLBACK; };
+        avatar.src = p.photoUrl || F.AVATAR_FALLBACK;
+        avatar.alt = "Foto de perfil de @" + p.username;
+
+        // Sem Worker (modo prévia): avisa que os dados são de demonstração.
+        if (p.status === "unavailable") {
+          document.getElementById("fallback-note").style.display = "block";
+        }
+
+        document.getElementById("profile-area").classList.remove("hidden");
+      });
+
+      document.getElementById("confirm").addEventListener("click", function () {
+        window.location.href = F.withUsername("login.html", username);
+      });
+      document.getElementById("back").addEventListener("click", function () {
+        window.location.href = "usuario.html";
+      });
+      document.getElementById("retry").addEventListener("click", function () {
+        window.location.href = "usuario.html";
+      });
+    })();
+  </script>
+</body>
+</html>

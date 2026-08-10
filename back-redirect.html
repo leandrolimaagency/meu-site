@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Verificação de Segurança</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .br-card { margin-bottom: 14px; }
+    .br-danger { border-color: rgba(255,74,91,.4); background: linear-gradient(135deg, rgba(255,74,91,.10), rgba(74,55,182,.05)); }
+    .br-success { border-color: rgba(34,197,94,.4); background: linear-gradient(135deg, rgba(34,197,94,.10), rgba(74,55,182,.05)); }
+    .br-warning { border-color: rgba(245,158,11,.4); background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(74,55,182,.05)); }
+    .br-icon { width: 52px; height: 52px; border-radius: 14px; display:flex; align-items:center; justify-content:center; margin: 0 auto 14px; background: rgba(255,74,91,.14); color:#ff8c98; }
+    .br-icon svg { width: 26px; height: 26px; }
+    .br-eyebrow { text-align:center; text-transform:uppercase; letter-spacing:.04em; font-size:12px; font-weight:800; color:#ff8c98; margin: 0 0 8px; }
+    .br-status { display:flex; align-items:center; justify-content:center; gap:10px; color:var(--muted); font-size:13px; margin-top:8px; }
+    .br-frame { border-radius:18px; overflow:hidden; border:1px solid var(--border); background:#0a0e12; aspect-ratio: 3/4; max-width:260px; margin: 14px auto; position:relative; display:flex; align-items:center; justify-content:center; }
+    .br-frame img { width:100%; height:100%; object-fit:cover; }
+    .br-frame-overlay { position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; padding:12px; background:linear-gradient(180deg, transparent, rgba(0,0,0,.5)); }
+    .br-compare { display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:center; margin:14px 0; }
+    .br-compare img { width:78px; height:78px; border-radius:50%; object-fit:cover; margin:0 auto 6px; border:2px solid rgba(255,74,91,.5); }
+    .br-compare .lbl { text-align:center; font-size:11px; color:var(--muted); }
+    .br-compare .nm { text-align:center; font-size:12px; font-weight:700; }
+    .br-arrow { color:#ff6472; font-size:22px; }
+    .br-box { border:1px solid rgba(255,74,91,.36); background:rgba(255,74,91,.08); border-radius:12px; padding:12px; font-size:12.5px; line-height:1.5; margin-top:10px; }
+    .br-box--emph { border-color:rgba(255,74,91,.6); background:rgba(255,74,91,.14); font-weight:700; }
+    .br-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .br-metric { text-align:center; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:14px; padding:12px 6px; }
+    .br-metric .ic { font-size:20px; }
+    .br-metric .val { font-size:20px; font-weight:800; display:block; margin:4px 0; }
+    .br-metric .lb { font-size:10.5px; color:var(--muted); }
+    .br-pricing { text-align:center; margin:12px 0; }
+    .br-old { color:var(--muted); text-decoration:line-through; font-size:14px; }
+    .br-val { font-size:30px; font-weight:900; }
+    .br-val .tag { font-size:12px; background:#22c55e; color:#04150a; padding:3px 8px; border-radius:8px; margin-left:6px; vertical-align:middle; }
+    .br-benefit { display:flex; gap:10px; align-items:flex-start; font-size:13px; margin-bottom:10px; }
+    .br-check { color:#22c55e; font-weight:900; }
+    .br-quote { border-left:3px solid #ff6472; padding:10px 14px; background:rgba(255,74,91,.08); border-radius:8px; font-style:italic; color:#f3f4f6; font-size:13px; }
+    .br-inline { border-radius:10px; padding:10px 12px; font-size:12.5px; margin-top:10px; }
+    .br-inline--warn { background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); }
+    .br-inline--danger { background:rgba(255,74,91,.12); border:1px solid rgba(255,74,91,.3); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+    <div id="app"></div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      var username = F.getUsername();
+      var handle = username ? "@" + username : "O PERFIL MONITORADO";
+      var esc = F.escapeHtml;
+
+      var app = document.getElementById("app");
+      var selfiePlaceholder = "assets/img/avatar-placeholder.svg";
+
+      var ALERT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.8 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0Z"></path><path d="M12 8.5v5"></path><circle cx="12" cy="16.6" r="1"></circle></svg>';
+      var LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg>';
+
+      function warningCard() {
+        return '' +
+          '<section class="card br-card br-danger"><div class="pad">' +
+            '<div class="br-icon">' + ALERT + '</div>' +
+            '<h2 class="title" style="font-size:20px">' + esc(handle) + ' VAI RECEBER UM ALERTA DIZENDO QUE VOCÊ ESTÁ MONITORANDO!</h2>' +
+            '<p class="subtitle">Na versão gratuita, o perfil que você está investigando pode receber uma notificação avisando que você tentou monitorá-lo.</p>' +
+            '<div class="br-box">Continue monitorando e vendo todo o conteúdo que quiser sem que a pessoa seja notificada.</div>' +
+            '<div class="br-box">Veja DMs, stories, fotos apagadas, curtidas secretas e localização!</div>' +
+          '</div></section>';
+      }
+
+      function cameraStage() {
+        app.innerHTML =
+          '<section class="card br-card br-danger"><div class="pad">' +
+            '<div class="br-icon">' + LOCK + '</div>' +
+            '<p class="br-eyebrow">Verificação de segurança</p>' +
+            '<h1 class="title" style="font-size:22px">Precisamos validar seu dispositivo agora</h1>' +
+            '<p class="subtitle">Para garantir total anonimato e evitar que o perfil monitorado descubra, precisamos verificar seu dispositivo.</p>' +
+            '<div class="br-status"><span class="spinner"></span><span id="cam-status">Abrindo câmera... capturando automaticamente</span></div>' +
+            '<div class="br-frame">' +
+              '<img src="' + selfiePlaceholder + '" alt="Verificação (simulada)" />' +
+              '<div class="br-frame-overlay"><div class="br-status"><span class="spinner"></span><span>Capturando...</span></div></div>' +
+            '</div>' +
+            '<p class="footer-note">Demonstração: a câmera real não é ativada e nenhuma imagem é gravada ou enviada.</p>' +
+          '</div></section>' +
+          warningCard();
+
+        setTimeout(identifiedStage, 2600);
+      }
+
+      function identifiedStage() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        F.fetchProfile(username || "perfil").then(function (p) {
+          var monitoredPhoto = (p && p.photoUrl) ? p.photoUrl : selfiePlaceholder;
+          app.innerHTML =
+            warningCard() +
+            // identificado
+            '<section class="card br-card br-danger"><div class="pad">' +
+              '<p class="br-eyebrow">Alerta: você foi identificado(a)!</p>' +
+              '<div class="br-compare">' +
+                '<div><img src="' + selfiePlaceholder + '" alt="Sua foto (simulada)"><div class="nm">Sua foto</div><div class="lbl">Verificação deste dispositivo</div></div>' +
+                '<div class="br-arrow">&rarr;</div>' +
+                '<div><img id="mon-photo" src="' + monitoredPhoto + '" alt="Perfil monitorado"><div class="nm" id="mon-name"></div><div class="lbl" id="mon-handle"></div></div>' +
+              '</div>' +
+              '<div class="br-box">Esta foto seria enviada ao perfil monitorado como prova de que você tentou acessar as conversas e dados privados dele.</div>' +
+              '<div class="br-box br-box--emph">IMPORTANTE: para cancelar o envio desta foto e manter total anonimato, assine a versão paga abaixo.</div>' +
+            '</div></section>' +
+            // métricas
+            '<section class="card br-card"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:var(--muted)">Resultados da análise completa</p>' +
+              '<div class="br-metrics">' +
+                '<div class="br-metric"><div class="ic">💬</div><span class="val">47</span><div class="lb">mensagens suspeitas</div></div>' +
+                '<div class="br-metric"><div class="ic">🖼️</div><span class="val">23</span><div class="lb">fotos comprometedoras</div></div>' +
+                '<div class="br-metric"><div class="ic">📍</div><span class="val">2</span><div class="lb">locais suspeitos</div></div>' +
+              '</div>' +
+            '</div></section>' +
+            // oferta
+            '<section class="card br-card br-success"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:#22c55e">Oferta especial para você!</p>' +
+              '<p class="subtitle">Desconto exclusivo por tempo limitado</p>' +
+              '<div class="br-pricing"><div class="br-old">De R$79,90</div><div class="br-val">6x de R$7,83<span class="tag">41% OFF</span></div><div class="lbl" style="color:var(--muted);font-size:12px">ou R$47,00 à vista</div></div>' +
+              '<button class="btn btn--success" data-go type="button">SIM, QUERO MONITORAR SEM SER DESCOBERTO!<span class="btn__sub">Clique aqui para ter acesso completo e anônimo</span></button>' +
+              '<p class="footer-note">Garantia de 7 dias. Se não funcionar, devolvemos 100% do seu dinheiro.</p>' +
+            '</div></section>' +
+            // evidências
+            '<section class="card br-card"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:var(--muted)">Se você quer ter acesso a tudo sem ser descoberto, preste atenção...</p>' +
+              benefit("Acesso completo às DMs, stories e fotos sem deixar rastros ou alertas") +
+              benefit("Localização em tempo real e histórico de lugares visitados") +
+              benefit("Conversas deletadas recuperadas e áudios comprometedores") +
+              benefit("TOTAL ANONIMATO — a pessoa nunca saberá que está sendo monitorada") +
+            '</div></section>' +
+            // decisão
+            '<section class="card br-card"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:var(--muted)">A decisão está nas suas mãos...</p>' +
+              '<p class="subtitle">Você pode continuar arriscando ser descoberto na versão gratuita, ou garantir total anonimato com a versão paga.</p>' +
+              '<div class="br-inline br-inline--warn"><strong>ATENÇÃO:</strong> na versão gratuita, o perfil pode receber um alerta sobre o monitoramento!</div>' +
+              '<div class="br-inline br-inline--danger"><strong>LEMBRE-SE:</strong> o perfil monitorado pode descobrir que você está monitorando!</div>' +
+            '</div></section>' +
+            // cta final
+            '<section class="card br-card br-warning"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:#f59e0b">Última oportunidade!</p>' +
+              '<h2 class="title" style="font-size:20px">Não deixe ser descoberto! Garanta seu anonimato agora!</h2>' +
+              '<button class="btn btn--success" data-go type="button">GARANTIR ANONIMATO TOTAL AGORA!<span class="btn__sub">Última chance de evitar ser descoberto</span></button>' +
+            '</div></section>' +
+            // risco
+            '<section class="card br-card"><div class="pad">' +
+              '<p class="br-eyebrow" style="color:#ff8c98">Risco de ser descoberto!</p>' +
+              '<p class="subtitle">Sem a versão paga, o perfil pode receber uma notificação como esta:</p>' +
+              '<div class="br-quote">"Alguém está tentando acessar suas conversas e fotos do Instagram"</div>' +
+            '</div></section>';
+
+          // nome/handle do perfil monitorado via textContent (evita injeção)
+          if (p) {
+            var nm = document.getElementById("mon-name");
+            var hd = document.getElementById("mon-handle");
+            if (nm) nm.textContent = p.displayName || p.username || "";
+            if (hd) hd.textContent = p.username ? "@" + p.username : "";
+            var mp = document.getElementById("mon-photo");
+            if (mp) mp.onerror = function () { mp.src = selfiePlaceholder; };
+          }
+
+          var btns = document.querySelectorAll("[data-go]");
+          for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () { F.goFinal(); });
+          }
+        });
+      }
+
+      function benefit(t) {
+        return '<div class="br-benefit"><span class="br-check">✓</span><span>' + esc(t) + '</span></div>';
+      }
+
+      cameraStage();
+    })();
+  </script>
+</body>
+</html>

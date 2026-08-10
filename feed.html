@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="assets/ig.css" />
+</head>
+<body>
+  <div class="ig-app">
+    <!-- top bar -->
+    <div class="ig-top">
+      <svg class="ico" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" data-unlock><polyline points="15 18 9 12 15 6"></polyline></svg>
+      <div class="uname">
+        <span data-handle>@—</span>
+        <svg viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg>
+      </div>
+      <div class="grow"></div>
+      <svg class="ico" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      <a href="#" id="dm-link" style="position:relative">
+        <svg class="ico" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        <span class="dm-badge">7</span>
+      </a>
+    </div>
+
+    <!-- stories -->
+    <div class="ig-stories" id="stories"></div>
+
+    <!-- feed -->
+    <div id="feed"></div>
+  </div>
+
+  <!-- trial countdown -->
+  <div class="trial-bar" id="trial" data-unlock>
+    <span>🎁 Avaliação gratuita</span>
+    <span class="trial-clock" id="trial-clock">10:00</span>
+    <span class="trial-msg">Assine para não perder o acesso</span>
+  </div>
+
+  <!-- bottom nav -->
+  <div class="ig-nav">
+    <svg class="ig-nav-ic active" viewBox="0 0 24 24" data-unlock><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h5v-6h4v6h5V9.5"></path></svg>
+    <svg class="ig-nav-ic" viewBox="0 0 24 24" data-unlock><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+    <svg class="ig-nav-ic" viewBox="0 0 24 24" data-unlock><rect x="3" y="3" width="18" height="18" rx="5"></rect><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+    <a href="#" id="dm-nav" style="position:relative;display:flex">
+      <svg class="ig-nav-ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      <span class="dm-badge" style="top:-2px;right:-4px">7</span>
+    </a>
+    <img class="ig-nav-ava" id="nav-ava" src="assets/img/avatar-placeholder.svg" alt="" referrerpolicy="no-referrer" data-unlock />
+  </div>
+
+  <!-- scan overlay -->
+  <div class="scan" id="scan">
+    <div class="scan-box">
+      <div class="scan-lock"><svg viewBox="0 0 24 24" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg></div>
+      <h2>Entrando no perfil...</h2>
+      <p id="scan-status">Estabelecendo conexão segura...</p>
+      <div class="scan-bar"><div class="scan-fill" id="scan-fill"></div></div>
+      <div class="scan-pct" id="scan-pct">0%</div>
+    </div>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script src="assets/ig-data.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      F.armBackRedirect();
+
+      var username = F.getUsername() || "perfil_privado";
+      var handleEls = document.querySelectorAll("[data-handle]");
+      for (var i = 0; i < handleEls.length; i++) handleEls[i].textContent = "@" + username;
+
+      var targetPhoto = F.AVATAR_FALLBACK;
+
+      F.fetchProfile(username).then(function (p) {
+        if (p.photoUrl) targetPhoto = p.photoUrl;
+        var navA = document.getElementById("nav-ava");
+        navA.onerror = function () { navA.src = F.AVATAR_FALLBACK; };
+        navA.src = targetPhoto;
+        buildStories();
+        buildFeed();
+      });
+
+      var LOCK = '<svg class="lock" viewBox="0 0 24 24" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg>';
+      // ícones do Instagram (contorno)
+      var IC_HEART = '<svg class="heart" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" fill="#ff3040"></path></svg>';
+      var IC_COMMENT = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"></path></svg>';
+      var IC_SHARE = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>';
+      var IC_SAVE = '<svg class="pa-right" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>';
+
+      function photoUrl(seed, w, h) { return "https://picsum.photos/seed/stk" + seed + "/" + w + "/" + h; }
+
+      function buildStories() {
+        var s = document.getElementById("stories");
+        var html = '<div class="story"><div class="story-ring story-ring--me"><img src="' + targetPhoto + '" alt="" referrerpolicy="no-referrer" onerror="this.src=\'' + F.AVATAR_FALLBACK + '\'" /></div><div class="story-lbl">Seu story</div></div>';
+        IG_DATA.stories.forEach(function (name, idx) {
+          html += '<div class="story"><div class="story-ring story-ring--blur"><img src="' + photoUrl("s" + idx, 150, 150) + '" alt="" onerror="this.src=\'' + F.avatarDataUri(name, idx) + '\';this.style.filter=\'none\'" />' + LOCK + '</div><div class="story-lbl">' + F.escapeHtml(name.split(" ")[0]) + '</div></div>';
+        });
+        s.innerHTML = html;
+      }
+
+      function buildFeed() {
+        var f = document.getElementById("feed");
+        var html = "";
+        IG_DATA.posts.forEach(function (post, idx) {
+          html +=
+            '<article class="post">' +
+              '<div class="post-head">' +
+                '<img class="post-ava ava-blur" src="' + photoUrl("a" + idx, 80, 80) + '" alt="" onerror="this.src=\'' + F.avatarDataUri(post.name, idx + 2) + '\';this.className=\'post-ava\'" />' +
+                '<div class="post-id"><b>' + F.escapeHtml(post.name) + '</b><span>' + F.escapeHtml(post.place) + '</span></div>' +
+                '<span class="post-more">•••</span>' +
+              '</div>' +
+              '<div class="post-media">' +
+                '<img class="photo" src="' + photoUrl("p" + idx, 600, 750) + '" alt="" onerror="this.style.display=\'none\'" />' +
+                LOCK + '<span class="post-media-tag">' + F.escapeHtml(post.tag) + '</span>' +
+              '</div>' +
+              '<div class="post-actions">' + IC_HEART + IC_COMMENT + IC_SHARE + IC_SAVE + '</div>' +
+              '<div class="post-likes">Curtido por <b>' + F.escapeHtml(post.likedBy) + '</b> e <b>outras ' + post.likes + ' pessoas</b></div>' +
+              '<div class="post-caption"><b>' + F.escapeHtml(post.name) + '</b> <span class="blurred">' + F.escapeHtml(post.caption) + '</span></div>' +
+              '<div class="post-comments">Ver todos os ' + (post.comments || "28") + ' comentários</div>' +
+              '<div class="post-time">' + F.escapeHtml(post.time) + '</div>' +
+            '</article>';
+        });
+        f.innerHTML = html;
+      }
+
+      // scan
+      var scan = document.getElementById("scan");
+      var fill = document.getElementById("scan-fill");
+      var pctEl = document.getElementById("scan-pct");
+      var statusEl = document.getElementById("scan-status");
+      var msgs = ["Estabelecendo conexão segura...", "Validando acesso ao perfil...", "Carregando stories e feed...", "Sincronizando o Direct...", "Pronto. Abrindo o perfil..."];
+      var start = Date.now(), dur = 3800;
+      var t = setInterval(function () {
+        var r = Math.min(1, (Date.now() - start) / dur);
+        fill.style.width = Math.floor(r * 100) + "%";
+        pctEl.textContent = Math.floor(r * 100) + "%";
+        statusEl.textContent = msgs[Math.min(msgs.length - 1, Math.floor(r * msgs.length))];
+        if (r >= 1) { clearInterval(t); scan.classList.add("hidden"); }
+      }, 90);
+
+      // countdown 10 min
+      var clock = document.getElementById("trial-clock");
+      var ct = setInterval(function () {
+        var rem = F.trialRemainingMs();
+        clock.textContent = F.formatClock(rem);
+        if (rem <= 0) { clearInterval(ct); F.goFinal(); }
+      }, 1000);
+      clock.textContent = F.formatClock(F.trialRemainingMs());
+
+      // navegação
+      function goDM(e) { if (e) e.preventDefault(); window.location.href = F.withUsername("direct.html", username); }
+      document.getElementById("dm-link").addEventListener("click", goDM);
+      document.getElementById("dm-nav").addEventListener("click", goDM);
+
+      function goUnlock() { F.goFinal(); }
+      document.addEventListener("click", function (e) {
+        var el = e.target.closest ? e.target.closest("[data-unlock]") : null;
+        if (el) { goUnlock(); return; }
+        // clique em stories/posts também desbloqueia
+        if (e.target.closest && (e.target.closest(".story") || e.target.closest(".post") || e.target.closest(".ig-stories"))) {
+          goUnlock();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

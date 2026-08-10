@@ -1,0 +1,23 @@
+# Dependências (o site é estático, sem build)
+node_modules/
+package-lock.json
+
+# Vercel
+.vercel/
+
+# Cloudflare Wrangler (cache local)
+.wrangler/
+worker/.wrangler/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editor
+*.log
+
+.vercel
+.env*
+
+.vercel
+.env*

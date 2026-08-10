@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Entrar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: #000;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px; color: #f5f5f5;
+    }
+    .ig { width: min(100%, 350px); }
+    .ig-card {
+      background: #000; border: 1px solid #262626; border-radius: 4px;
+      padding: 34px 40px 22px; text-align: center;
+    }
+    .ig-logo {
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: 40px; margin: 6px 0 26px; letter-spacing: 1px;
+    }
+    .ig-input {
+      width: 100%; background: #121212; border: 1px solid #363636; border-radius: 6px;
+      padding: 11px 10px; margin-bottom: 8px; color: #f5f5f5; font-size: 13px; outline: none;
+    }
+    .ig-input:focus { border-color: #565656; }
+    .ig-btn {
+      width: 100%; margin-top: 8px; background: #0095f6; border: 0; border-radius: 8px;
+      color: #fff; font-weight: 600; font-size: 14px; padding: 8px; cursor: pointer;
+    }
+    .ig-btn:disabled { opacity: .5; }
+    .ig-or { display: flex; align-items: center; gap: 16px; color: #8e8e8e; font-size: 13px; font-weight: 600; margin: 18px 0; }
+    .ig-or::before, .ig-or::after { content: ""; flex: 1; height: 1px; background: #363636; }
+    .ig-forgot { color: #e0f1ff; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 14px; }
+    .ig-sub { margin-top: 14px; border: 1px solid #262626; border-radius: 4px; padding: 18px; font-size: 14px; color: #f5f5f5; text-align: center; }
+    .ig-sub a { color: #0095f6; font-weight: 600; text-decoration: none; }
+    .ig-note { margin-top: 18px; text-align: center; color: #8e8e8e; font-size: 11px; line-height: 1.5; }
+
+    /* Overlay de "quebra" */
+    .crack {
+      position: fixed; inset: 0; z-index: 50;
+      background: radial-gradient(circle at top, rgba(74,55,182,.25), transparent 35%), rgba(4,6,7,.97);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .crack-box { width: min(100%, 380px); text-align: center; font-family: Inter, sans-serif; }
+    .crack-lock {
+      width: 64px; height: 64px; margin: 0 auto 18px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #4a37b6, #ab58f4); box-shadow: 0 18px 44px rgba(74,55,182,.35);
+    }
+    .crack-lock svg { width: 30px; height: 30px; }
+    .crack h2 { margin: 0 0 8px; font-size: 20px; font-weight: 800; }
+    .crack-status { color: #cbd5e1; font-size: 14px; min-height: 20px; margin-bottom: 16px; }
+    .crack-attempt { font-family: ui-monospace, "Courier New", monospace; color: #ab58f4; font-size: 13px; min-height: 18px; margin-bottom: 14px; }
+    .crack-bar { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,.1); overflow: hidden; }
+    .crack-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #4a37b6, #ab58f4); transition: width .12s linear; }
+    .crack-pct { margin-top: 10px; color: #9ca3af; font-size: 12px; font-weight: 700; }
+    .hidden { display: none !important; }
+
+    /* ---------- Desktop / PC ---------- */
+    @media (min-width: 700px) {
+      body {
+        background:
+          radial-gradient(circle at 50% -10%, rgba(74,55,182,.18), transparent 45%),
+          #000;
+      }
+      .ig { width: min(100%, 400px); }
+      .ig-card {
+        padding: 44px 44px 28px;
+        border-radius: 12px;
+        box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      }
+      .ig-logo { font-size: 46px; }
+      .ig-input { padding: 13px 12px; font-size: 14px; }
+      .ig-btn { padding: 10px; font-size: 15px; }
+      .ig-sub { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ig">
+    <div class="ig-card">
+      <div class="ig-logo">Instagram</div>
+      <form id="ig-form" autocomplete="off">
+        <input class="ig-input" id="ig-user" type="text" placeholder="Telefone, nome de usuário ou email" autocapitalize="none" autocorrect="off" spellcheck="false" />
+        <!-- Campo de senha COSMÉTICO: o valor nunca é lido, salvo ou enviado. -->
+        <input class="ig-input" id="ig-pass" type="password" placeholder="Senha" autocomplete="new-password" />
+        <button class="ig-btn" type="submit" id="ig-submit">Entrar</button>
+      </form>
+      <div class="ig-or">OU</div>
+      <a class="ig-forgot" href="#" onclick="return false">Esqueceu a senha?</a>
+    </div>
+    <div class="ig-sub">
+      Não tem uma conta? <a href="#" onclick="return false">Cadastre-se</a>
+    </div>
+    <p class="ig-note">Esta é uma tela de demonstração. Nada que você digitar é enviado ou armazenado.</p>
+  </div>
+
+  <!-- Overlay da encenação de acesso -->
+  <div class="crack hidden" id="crack">
+    <div class="crack-box">
+      <div class="crack-lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="11" width="16" height="10" rx="2.5"></rect>
+          <path d="M8 11V8a4 4 0 1 1 8 0v3"></path>
+        </svg>
+      </div>
+      <h2>Quebrando a criptografia do perfil...</h2>
+      <div class="crack-status" id="crack-status">Estabelecendo conexão segura...</div>
+      <div class="crack-attempt" id="crack-attempt">&nbsp;</div>
+      <div class="crack-bar"><div class="crack-fill" id="crack-fill"></div></div>
+      <div class="crack-pct" id="crack-pct">0%</div>
+    </div>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script src="assets/login.js"></script>
+</body>
+</html>

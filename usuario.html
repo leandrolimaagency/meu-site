@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Informe o perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="card">
+      <div class="pad">
+        <div class="pill pill--live"><span class="dot"></span> PASSO 1 DE 2</div>
+        <h1 class="title">Qual perfil você quer analisar?</h1>
+        <p class="subtitle">
+          Digite o @ do Instagram que você quer investigar. Vamos localizar o perfil
+          e iniciar a análise em tempo real.
+        </p>
+
+        <form id="form" autocomplete="off">
+          <div class="field">
+            <label for="username">Usuário do Instagram</label>
+            <div class="input-at">
+              <span>@</span>
+              <input class="input" id="username" name="username" type="text"
+                     placeholder="nomedoconjuge_10" inputmode="text" autocapitalize="none"
+                     autocorrect="off" spellcheck="false" />
+            </div>
+          </div>
+
+          <button class="btn btn--primary" id="submit" type="submit">Analisar perfil</button>
+        </form>
+
+        <div class="loader hidden" id="loader">
+          <span class="spinner"></span>
+          <span id="loader-text">Buscando perfil...</span>
+        </div>
+
+        <p class="footer-note">🔒 A análise é anônima. O perfil não é notificado.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      F.armBackRedirect();
+
+      var input = document.getElementById("username");
+      var prefill = F.getUsername();
+      if (prefill) input.value = prefill;
+
+      document.getElementById("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var u = F.sanitizeUsername(input.value);
+        if (!u) { input.focus(); return; }
+        F.setUsername(u);
+
+        document.getElementById("submit").disabled = true;
+        document.getElementById("loader").classList.remove("hidden");
+
+        // pequeno "buscando..." antes de ir para a confirmação
+        setTimeout(function () {
+          window.location.href = F.withUsername("confirmar.html", u);
+        }, 1100);
+      });
+    })();
+  </script>
+</body>
+</html>

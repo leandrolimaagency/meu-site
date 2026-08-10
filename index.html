@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Descubra o que acontece no Instagram do seu cônjuge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="card">
+      <div class="pad">
+        <div class="pill pill--live"><span class="dot"></span> ANÁLISE EM TEMPO REAL</div>
+
+        <h1 class="title">Descubra o que seu cônjuge faz quando está no Instagram</h1>
+        <p class="subtitle">
+          Assista ao vídeo abaixo e veja como a nossa análise consegue revelar
+          conversas, curtidas e atividades escondidas de qualquer perfil.
+        </p>
+
+        <div class="video-frame">
+          <video id="vsl" playsinline muted autoplay preload="auto"></video>
+          <button class="vsl-unmute hidden" id="vsl-unmute" type="button">🔊 Toque para ativar o som</button>
+          <div class="video-frame__placeholder" id="vsl-placeholder">
+            <div class="video-frame__play"></div>
+            <div>Sua VSL de qualificação aparece aqui<br /><small>(arquivo: assets/video/vsl-inicial.mp4)</small></div>
+          </div>
+        </div>
+
+        <button class="btn btn--primary" id="spy" type="button">
+          Espionar agora
+          <span class="btn__sub">Análise 100% anônima e em tempo real</span>
+        </button>
+
+        <div class="trust">
+          <span>🔒 Conexão segura</span>
+          <span>👁️ Modo invisível</span>
+          <span>⚡ Resultado imediato</span>
+        </div>
+
+        <p class="footer-note">
+          Os dados são processados em tempo real e permanecem confidenciais durante toda a análise.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      var CFG = window.STALKEA_CONFIG || {};
+
+      // Carrega o MP4 da VSL, se existir; senão mantém o placeholder.
+      var video = document.getElementById("vsl");
+      var placeholder = document.getElementById("vsl-placeholder");
+      var unmute = document.getElementById("vsl-unmute");
+
+      if (CFG.VSL_INICIAL_SRC) {
+        video.src = CFG.VSL_INICIAL_SRC;
+
+        video.addEventListener("loadeddata", function () {
+          placeholder.classList.add("hidden");
+          // autoplay só é permitido mudo; tentamos tocar e oferecemos o som.
+          video.muted = true;
+          var p = video.play();
+          if (p && typeof p.catch === "function") {
+            p.then(function () {
+              unmute.classList.remove("hidden");
+            }).catch(function () {
+              // navegador bloqueou até o autoplay mudo: mostra controles p/ tocar
+              video.setAttribute("controls", "");
+            });
+          } else {
+            unmute.classList.remove("hidden");
+          }
+        });
+
+        video.addEventListener("error", function () {
+          // arquivo ainda não existe: segue com placeholder visível
+          video.classList.add("hidden");
+        });
+
+        // 1 toque ativa o som e some com o botão.
+        unmute.addEventListener("click", function () {
+          video.muted = false;
+          video.volume = 1;
+          video.play();
+          video.setAttribute("controls", "");
+          unmute.classList.add("hidden");
+        });
+      }
+
+      document.getElementById("spy").addEventListener("click", function () {
+        window.location.href = "usuario.html";
+      });
+    })();
+  </script>
+</body>
+</html>

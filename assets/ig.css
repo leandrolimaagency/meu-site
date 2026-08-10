@@ -1,0 +1,194 @@
+/* =============================================================================
+   IG.CSS — visual "dentro do Instagram" (feed, stories e direct). Tema escuro.
+   ============================================================================= */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0; background: #000; color: #fff;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding-bottom: 128px;
+}
+.ig-app { width: min(100%, 500px); margin: 0 auto; }
+img { display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ---- top bar ---- */
+.ig-top {
+  position: sticky; top: 0; z-index: 20; background: #000;
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px; border-bottom: 1px solid #1c1c1c;
+}
+.ig-top .uname { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 18px; }
+.ig-top .uname svg { width: 15px; height: 15px; }
+.ig-top .grow { flex: 1; }
+.ig-top .ico { width: 24px; height: 24px; cursor: pointer; }
+.dm-badge {
+  position: absolute; top: -6px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px;
+  background: #ff3040; color: #fff; font-size: 10px; font-weight: 800; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center; border: 1px solid #000;
+}
+
+/* ---- stories ---- */
+.ig-stories { display: flex; gap: 14px; padding: 14px; overflow-x: auto; border-bottom: 1px solid #1c1c1c; }
+.ig-stories::-webkit-scrollbar { display: none; }
+.story { flex: 0 0 auto; width: 68px; text-align: center; cursor: pointer; }
+.story-ring {
+  width: 66px; height: 66px; border-radius: 50%; padding: 3px; position: relative;
+  background: linear-gradient(135deg, #feda75, #d62976, #962fbf, #4f5bd5);
+}
+.story-ring--me { background: #3a3a3a; }
+.story-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #000; background: #222; }
+.story-ring--blur img { filter: blur(5px) brightness(.75); }
+.story-ring .lock { position: absolute; inset: 0; margin: auto; width: 20px; height: 20px; stroke: #fff; background: rgba(0,0,0,.4); border-radius: 50%; padding: 6px; }
+.story-lbl { font-size: 12px; color: #d7d7d7; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- feed posts ---- */
+.post { border-bottom: 1px solid #1c1c1c; padding-bottom: 8px; margin-bottom: 6px; }
+.post-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; }
+.post-ava { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+.post-id { flex: 1; line-height: 1.2; }
+.post-id b { font-size: 14px; }
+.post-id span { display: block; font-size: 11px; color: #b3b3b3; }
+.post-more { color: #fff; font-size: 18px; letter-spacing: 1px; }
+.post-media {
+  position: relative; aspect-ratio: 4/5; overflow: hidden; background: #10131a;
+  display: flex; align-items: center; justify-content: center;
+}
+.post-media .photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: blur(18px) brightness(.7) saturate(1.1); transform: scale(1.25);
+}
+.post-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,.15), rgba(0,0,0,.5));
+}
+.post-media .lock { position: relative; z-index: 1; width: 34px; height: 34px; stroke: #fff; opacity: .92; filter: drop-shadow(0 2px 8px rgba(0,0,0,.6)); }
+.post-media-tag {
+  position: absolute; z-index: 1; bottom: 12px; left: 12px; font-size: 11px; font-weight: 700;
+  background: rgba(0,0,0,.6); color: #fff; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.2);
+}
+.post-actions { display: flex; align-items: center; gap: 16px; padding: 12px 14px 4px; }
+.post-actions svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.9; cursor: pointer; }
+.post-actions .heart { stroke: #ff3040; }
+.post-actions .pa-right { margin-left: auto; }
+.post-comments { padding: 2px 14px; font-size: 13px; color: #8e8e8e; }
+.post-likes { padding: 2px 14px; font-size: 13px; }
+.post-caption { padding: 4px 14px; font-size: 13px; line-height: 1.4; }
+.post-time { padding: 4px 14px; font-size: 11px; color: #8e8e8e; text-transform: uppercase; }
+.blurred { filter: blur(4px); user-select: none; }
+.ava-blur { filter: blur(3px) brightness(.85); }
+
+/* ---- direct ---- */
+.dm-head { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-bottom: 1px solid #1c1c1c; position: sticky; top: 0; background: #000; z-index: 20; }
+.dm-head .ico { width: 24px; height: 24px; cursor: pointer; }
+.dm-head .title { flex: 1; display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 18px; }
+.dm-search { margin: 12px 14px; background: #1a1a1a; border-radius: 10px; padding: 9px 12px; color: #8e8e8e; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.dm-tabs { display: flex; justify-content: space-between; padding: 4px 14px 10px; font-size: 14px; font-weight: 700; border-bottom: 1px solid #1c1c1c; }
+.dm-tabs span { color: #8e8e8e; }
+.dm-tabs .req { color: #e0f1ff; }
+.dm-list { padding: 6px 0; }
+.dm-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; }
+.dm-ava-wrap { position: relative; flex: 0 0 auto; }
+.dm-ava { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.dm-online { position: absolute; bottom: 2px; right: 2px; width: 13px; height: 13px; border-radius: 50%; background: #2ecc71; border: 2px solid #000; }
+.dm-main { flex: 1; min-width: 0; }
+.dm-name { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.dm-name .vf { color: #3897f0; font-size: 12px; }
+.dm-preview { font-size: 13px; color: #b3b3b3; margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+.dm-preview .txt { max-width: 62%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.dm-preview.unread .txt { color: #fff; font-weight: 600; }
+.dm-meta { text-align: right; flex: 0 0 auto; }
+.dm-time { font-size: 12px; color: #8e8e8e; }
+.dm-unread { display: inline-block; margin-top: 6px; min-width: 18px; height: 18px; padding: 0 5px; background: #3897f0; color: #fff; font-size: 11px; font-weight: 800; border-radius: 999px; line-height: 18px; text-align: center; }
+.dm-cam { color: #8e8e8e; }
+
+/* ---- conversa (thread de DM) ---- */
+.cv-head { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid #1c1c1c; position: sticky; top: 0; background: #000; z-index: 20; }
+.cv-head .ico { width: 24px; height: 24px; cursor: pointer; flex: 0 0 auto; }
+.cv-ava { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.cv-id { flex: 1; min-width: 0; line-height: 1.2; }
+.cv-id b { font-size: 15px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cv-id span { font-size: 12px; color: #8e8e8e; }
+.cv-thread { padding: 14px 12px 8px; display: flex; flex-direction: column; gap: 10px; }
+.cv-day { text-align: center; color: #8e8e8e; font-size: 12px; margin: 6px 0; }
+.msg { max-width: 74%; padding: 10px 13px; border-radius: 20px; font-size: 14px; line-height: 1.4; position: relative; }
+.msg.them { align-self: flex-start; background: #262626; border-bottom-left-radius: 6px; }
+.msg.me { align-self: flex-end; background: linear-gradient(135deg, #4f5bd5, #962fbf); border-bottom-right-radius: 6px; }
+.msg .blurred { filter: blur(4.5px); user-select: none; }
+.msg-time { display: block; font-size: 10px; color: #8e8e8e; margin: -2px 6px 2px; }
+.msg-time.me { text-align: right; }
+.msg-photo { align-self: flex-start; width: 190px; max-width: 74%; }
+.msg-photo.me { align-self: flex-end; }
+.msg-photo .frame { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3/4; background: #10131a; }
+.msg-photo .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(16px) brightness(.7); transform: scale(1.3); }
+.msg-photo .frame .lock { position: absolute; inset: 0; margin: auto; width: 28px; height: 28px; stroke: #fff; }
+.msg-audio { display: flex; align-items: center; gap: 10px; min-width: 200px; }
+.msg-audio .play { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.msg-audio .wave { flex: 1; height: 20px; background:
+  repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0 2px, transparent 2px 5px); border-radius: 3px; opacity: .8; }
+.msg-audio .dur { font-size: 11px; opacity: .85; }
+.cv-locked { text-align: center; color: #9ca3af; font-size: 12px; padding: 10px 20px 4px; }
+.cv-input {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; width: min(100%, 500px); margin: 0 auto;
+  background: #000; border-top: 1px solid #1c1c1c; padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 10px;
+}
+.cv-locked-bar { background: linear-gradient(135deg, #ab58f4, #ff5f6d); color: #fff; font-weight: 700; font-size: 12.5px; text-align: center; padding: 8px 12px; cursor: pointer; }
+.cv-locked-bar .clk { background: rgba(0,0,0,.35); padding: 2px 7px; border-radius: 6px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.cv-input .box { flex: 1; background: #1a1a1a; border: 1px solid #333; border-radius: 999px; padding: 10px 14px; color: #8e8e8e; font-size: 14px; }
+.cv-input .ic { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2; flex: 0 0 auto; }
+
+/* ---- trial countdown ---- */
+.trial-bar {
+  position: fixed; left: 0; right: 0; bottom: 56px; z-index: 30; cursor: pointer;
+  width: min(100%, 500px); margin: 0 auto;
+  background: linear-gradient(135deg, #ab58f4, #ff5f6d);
+  display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px; font-size: 13px; font-weight: 700;
+}
+.trial-clock { background: rgba(0,0,0,.35); border-radius: 8px; padding: 3px 9px; font-variant-numeric: tabular-nums; font-weight: 900; }
+.trial-msg { font-weight: 600; opacity: .95; }
+
+/* ---- bottom nav ---- */
+.ig-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  width: min(100%, 500px); margin: 0 auto; background: #000; border-top: 1px solid #1c1c1c;
+  display: flex; align-items: center; justify-content: space-around; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+.ig-nav-ic { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; cursor: pointer; }
+.ig-nav-ic.active { stroke-width: 2.6; }
+.ig-nav-ava { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #fff; cursor: pointer; }
+
+/* ---- scan overlay ---- */
+.scan { position: fixed; inset: 0; z-index: 60; background: radial-gradient(circle at top, rgba(74,55,182,.25), transparent 35%), rgba(0,0,0,.96); display: flex; align-items: center; justify-content: center; padding: 28px; }
+.scan-box { width: min(100%, 360px); text-align: center; }
+.scan-lock { width: 62px; height: 62px; margin: 0 auto 16px; border-radius: 16px; background: linear-gradient(135deg,#4a37b6,#ab58f4); display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 44px rgba(74,55,182,.35); }
+.scan-lock svg { width: 28px; height: 28px; }
+.scan h2 { margin: 0 0 8px; font-size: 19px; font-weight: 800; }
+.scan p { color: #cbd5e1; font-size: 14px; min-height: 20px; margin: 0 0 16px; }
+.scan-bar { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,.1); overflow: hidden; }
+.scan-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#4a37b6,#ab58f4); transition: width .15s linear; }
+.scan-pct { margin-top: 10px; color: #9ca3af; font-size: 12px; font-weight: 700; }
+.hidden { display: none !important; }
+
+/* ---------- Desktop / PC ----------
+   No computador, a "tela do Instagram" vira uma coluna estilo celular,
+   centralizada e emoldurada, em vez de esticar na largura toda. */
+@media (min-width: 760px) {
+  body {
+    background:
+      radial-gradient(circle at 50% -8%, rgba(74, 55, 182, 0.16), transparent 42%),
+      #0a0a0c;
+  }
+  .ig-app {
+    min-height: 100vh;
+    background: #000;
+    border-left: 1px solid #1c1c1c;
+    border-right: 1px solid #1c1c1c;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
+  }
+  /* as barras fixas já são centralizadas em 500px; ganham as mesmas "paredes" */
+  .ig-nav, .trial-bar, .cv-input {
+    border-left: 1px solid #1c1c1c;
+    border-right: 1px solid #1c1c1c;
+  }
+}
