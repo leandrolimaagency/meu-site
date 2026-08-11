@@ -162,7 +162,7 @@ function normalizeProfile(json, fallbackUser) {
     isPrivate: !!pick(u, ["is_private", "isPrivate", "private"]),
     isVerified: !!pick(u, ["is_verified", "isVerified", "verified"]),
   };
-}
+
 
 // Encontra o objeto do usuário em respostas aninhadas comuns.
 function locateUser(json) {
