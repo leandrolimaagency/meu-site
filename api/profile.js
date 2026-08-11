@@ -1,19 +1,9 @@
-/* =============================================================================
-   Função serverless (Vercel) — busca do perfil PÚBLICO do Instagram (passo 3).
-   Recebe: GET /api/profile?username=algum_perfil
-   Retorna: JSON { username, displayName, photoUrl, followers, following, posts,
-                   isPrivate, isVerified }.
+/*
+  Vercel Serverless Function
+  GET /api/profile?username=algum_perfil
+*/
 
-   Estratégia:
-   1) Se houver uma API de terceiros configurada (env RAPIDAPI_KEY + RAPIDAPI_HOST),
-      usa ela — é o caminho confiável, porque o IG bloqueia servidores de nuvem.
-   2) Senão, tenta o endpoint público do IG direto (quase sempre bloqueado por 429
-      quando vem de datacenter — serve só como último recurso).
-
-   Só usa informação PÚBLICA (foto, nome, contadores). Nenhum login, nada privado.
-   ============================================================================= */
-
-const IG_APP_ID = "936619743392459"; // app id público do web client do IG
+const IG_APP_ID = "936619743392459";
 
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,6 +16,7 @@ module.exports = async function handler(req, res) {
   }
 
   const raw = (req.query && req.query.username) || "";
+
   const username = String(raw)
     .trim()
     .replace(/^@+/, "")
@@ -38,32 +29,55 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const rawJson = process.env.RAPIDAPI_KEY
-      ? await fetchViaProvider(username)
-      : await fetchViaInstagram(username);
+    let rawJson;
+
+    if (process.env.RAPIDAPI_KEY) {
+      rawJson = await fetchViaProvider(username);
+    } else {
+      rawJson = await fetchViaInstagram(username);
+    }
 
     if (rawJson && rawJson.__status) {
-      res.status(rawJson.__status).json({ error: rawJson.__error || "upstream" });
+      res.status(rawJson.__status).json({
+        error: rawJson.__error || "upstream",
+      });
       return;
     }
 
     const payload = normalizeProfile(rawJson, username);
-    if (!payload.username && !payload.photoUrl && payload.followers == null) {
-      res.status(404).json({ error: "profile not found" });
+
+    if (
+      !payload.username &&
+      !payload.photoUrl &&
+      payload.followers == null
+    ) {
+      res.status(404).json({
+        error: "profile not found",
+      });
       return;
     }
 
-    res.setHeader("Cache-Control", "public, max-age=300, s-maxage=300");
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=300, s-maxage=300"
+    );
+
     res.status(200).json(payload);
   } catch (err) {
-    res.status(502).json({ error: "fetch failed" });
-  }
-}
+    console.error("PROFILE ERROR:", err);
 
-/* --------- API de terceiros (RapidAPI) — caminho confiável --------------- */
-/* Provider: Instagram Scraper Stable API (RockSolid).
-   POST /ig_get_fb_profile_v3.php  com body  username_or_url=<@>  */
-```js
+    res.status(502).json({
+      error: "fetch failed",
+    });
+  }
+};
+
+
+/*
+  RapidAPI
+  Instagram Scraper Stable API
+  POST /ig_get_fb_profile_v3.php
+*/
 async function fetchViaProvider(username) {
   const host =
     process.env.RAPIDAPI_HOST ||
@@ -76,17 +90,21 @@ async function fetchViaProvider(username) {
 
   const r = await fetch(url, {
     method: "POST",
+
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
       "x-rapidapi-host": host,
     },
+
     body: new URLSearchParams({
       username_or_url: username,
     }),
   });
 
   if (!r.ok) {
+    console.error("RapidAPI status:", r.status);
+
     return {
       __status: r.status === 404 ? 404 : 502,
       __error: "provider " + r.status,
@@ -95,34 +113,54 @@ async function fetchViaProvider(username) {
 
   return r.json();
 }
-```
 
-/* --------- Endpoint público do IG direto (fallback, costuma dar 429) ----- */
+
+/*
+  Fallback direto do Instagram
+*/
 async function fetchViaInstagram(username) {
   const apiUrl =
     "https://i.instagram.com/api/v1/users/web_profile_info/?username=" +
     encodeURIComponent(username);
+
   const r = await fetch(apiUrl, {
     headers: {
       "x-ig-app-id": IG_APP_ID,
+
       "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-        "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+        "AppleWebKit/537.36 (KHTML, like Gecko) " +
+        "Chrome/120.0 Safari/537.36",
+
       Accept: "application/json",
-      "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+
+      "Accept-Language":
+        "pt-BR,pt;q=0.9,en;q=0.8",
     },
   });
-  if (!r.ok) return { __status: r.status === 404 ? 404 : 502, __error: "ig " + r.status };
+
+  if (!r.ok) {
+    return {
+      __status: r.status === 404 ? 404 : 502,
+      __error: "ig " + r.status,
+    };
+  }
+
   return r.json();
 }
 
-/* --------- Normalizador tolerante a diferentes formatos de API ----------- */
-```js
+
+/*
+  Converte a resposta da RapidAPI
+  para o formato que seu frontend espera.
+*/
 function normalizeProfile(json, fallbackUser) {
   const u = locateUser(json) || {};
 
   return {
-    username: u.username || fallbackUser,
+    username:
+      u.username ||
+      fallbackUser,
 
     displayName:
       u.full_name ||
@@ -150,49 +188,97 @@ function normalizeProfile(json, fallbackUser) {
       Boolean(u.is_verified),
   };
 }
-```
-  return {
-    username: pick(u, ["username", "user_name", "handle"]) || fallbackUser,
-    displayName: pick(u, ["full_name", "fullName", "name", "display_name"]) ||
-      pick(u, ["username"]) || fallbackUser,
-    photoUrl: photoUrl || "",
-    followers: toNum(followers),
-    following: toNum(following),
-    posts: toNum(posts),
-    isPrivate: !!pick(u, ["is_private", "isPrivate", "private"]),
-    isVerified: !!pick(u, ["is_verified", "isVerified", "verified"]),
-  };
 
 
-// Encontra o objeto do usuário em respostas aninhadas comuns.
+/*
+  Localiza o objeto do usuário
+  dentro da resposta da API.
+*/
 function locateUser(json) {
-  if (!json || typeof json !== "object") return null;
-  const candidates = [
-    "data.user", "data.data.user", "graphql.user", "user", "data", "result",
-    "response", "profile", "data.data",
-  ];
-  for (const c of candidates) {
-    const v = getPath(json, c);
-    if (v && typeof v === "object" && looksLikeUser(v)) return v;
+  if (!json || typeof json !== "object") {
+    return null;
   }
-  return looksLikeUser(json) ? json : (getPath(json, "data") || json);
+
+  const candidates = [
+    "data.user",
+    "data.data.user",
+    "graphql.user",
+    "user",
+    "data",
+    "result",
+    "response",
+    "profile",
+    "data.data",
+  ];
+
+  for (const path of candidates) {
+    const value = getPath(json, path);
+
+    if (
+      value &&
+      typeof value === "object" &&
+      looksLikeUser(value)
+    ) {
+      return value;
+    }
+  }
+
+  if (looksLikeUser(json)) {
+    return json;
+  }
+
+  return null;
 }
 
-function looksLikeUser(o) {
-  if (!o || typeof o !== "object") return false;
+
+/*
+  Verifica se o objeto parece ser um perfil.
+*/
+function looksLikeUser(obj) {
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
   return (
-    "username" in o || "full_name" in o || "profile_pic_url" in o ||
-    "edge_followed_by" in o || "follower_count" in o || "followers" in o
+    "username" in obj ||
+    "full_name" in obj ||
+    "profile_pic_url" in obj ||
+    "follower_count" in obj ||
+    "following_count" in obj ||
+    "media_count" in obj
   );
 }
 
+
+/*
+  Acessa propriedades como:
+  "data.user.username"
+*/
 function getPath(obj, path) {
-  return path.split(".").reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
+  return path
+    .split(".")
+    .reduce(
+      (acc, key) => (acc == null ? acc : acc[key]),
+      obj
+    );
 }
 
-function toNum(v) {
-  if (v == null || v === "") return null;
-  if (typeof v === "number") return v;
-  const n = Number(String(v).replace(/[^\d.]/g, ""));
-  return isNaN(n) ? null : n;
+
+/*
+  Converte valores para número.
+*/
+function toNum(value) {
+  if (value == null || value === "") {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    return value;
+  }
+
+  const number = Number(
+    String(value).replace(/[^\d.]/g, "")
+  );
+
+  return Number.isNaN(number) ? null : number;
 }
