@@ -43,11 +43,9 @@ export default async function handler(req, res) {
       : await fetchViaInstagram(username);
 
     if (rawJson && rawJson.__status) {
-  res
-    .status(rawJson.__status)
-    .json({ error: rawJson.__error || "upstream" });
-  return;
-}
+      res.status(rawJson.__status).json({ error: rawJson.__error || "upstream" });
+      return;
+    }
 
     const payload = normalizeProfile(rawJson, username);
     if (!payload.username && !payload.photoUrl && payload.followers == null) {
@@ -62,57 +60,42 @@ export default async function handler(req, res) {
   }
 }
 
-/* --------- API de terceiros (RapidAPI) --------- */
-
+/* --------- API de terceiros (RapidAPI) — caminho confiável --------------- */
+/* Provider: Instagram Scraper Stable API (RockSolid).
+   POST /ig_get_fb_profile_v3.php  com body  username_or_url=<@>  */
+```js
 async function fetchViaProvider(username) {
   const host =
     process.env.RAPIDAPI_HOST ||
     "instagram-scraper-stable-api.p.rapidapi.com";
 
-  const path =
-    process.env.RAPIDAPI_PROFILE_PATH ||
-    "/get_ig_user_about.php";
-
-  const param =
-    process.env.RAPIDAPI_PROFILE_PARAM ||
-    "username_or_url";
-
-  const cleanUsername = String(username)
-    .trim()
-    .replace(/^@+/, "");
-
   const url =
-    `https://${host}${path}?${param}=${encodeURIComponent(cleanUsername)}`;
+    "https://" +
+    host +
+    "/ig_get_fb_profile_v3.php";
 
   const r = await fetch(url, {
-    method: "GET",
+    method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
       "x-rapidapi-host": host,
     },
+    body: new URLSearchParams({
+      username_or_url: username,
+    }),
   });
-
-  const text = await r.text();
-
-  let data;
-
-  try {
-    data = JSON.parse(text);
-  } catch {
-    data = text;
-  }
 
   if (!r.ok) {
     return {
       __status: r.status === 404 ? 404 : 502,
       __error: "provider " + r.status,
-      details: data,
     };
   }
 
-  return data;
+  return r.json();
 }
+```
 
 /* --------- Endpoint público do IG direto (fallback, costuma dar 429) ----- */
 async function fetchViaInstagram(username) {
@@ -134,34 +117,40 @@ async function fetchViaInstagram(username) {
 }
 
 /* --------- Normalizador tolerante a diferentes formatos de API ----------- */
+```js
 function normalizeProfile(json, fallbackUser) {
   const u = locateUser(json) || {};
-  const pick = (obj, keys) => {
-    for (const k of keys) {
-      const v = getPath(obj, k);
-      if (v !== undefined && v !== null && v !== "") return v;
-    }
-    return undefined;
+
+  return {
+    username: u.username || fallbackUser,
+
+    displayName:
+      u.full_name ||
+      u.username ||
+      fallbackUser,
+
+    photoUrl:
+      u.hd_profile_pic_url_info?.url ||
+      u.profile_pic_url ||
+      "",
+
+    followers:
+      toNum(u.follower_count),
+
+    following:
+      toNum(u.following_count),
+
+    posts:
+      toNum(u.media_count),
+
+    isPrivate:
+      Boolean(u.is_private),
+
+    isVerified:
+      Boolean(u.is_verified),
   };
-
-  const photoUrl = pick(u, [
-    "profile_pic_url_hd", "profile_pic_url", "profilePicUrl", "profile_picture",
-    "hd_profile_pic_url_info.url", "profile_pic_url_hd_proxy", "avatar", "avatar_url",
-    "profile_image", "image",
-  ]);
-  const followers = pick(u, [
-    "edge_followed_by.count", "follower_count", "followers", "followersCount",
-    "followed_by_count", "follower",
-  ]);
-  const following = pick(u, [
-    "edge_follow.count", "following_count", "following", "followingCount",
-    "follows_count",
-  ]);
-  const posts = pick(u, [
-    "edge_owner_to_timeline_media.count", "media_count", "posts", "postsCount",
-    "post_count",
-  ]);
-
+}
+```
   return {
     username: pick(u, ["username", "user_name", "handle"]) || fallbackUser,
     displayName: pick(u, ["full_name", "fullName", "name", "display_name"]) ||
