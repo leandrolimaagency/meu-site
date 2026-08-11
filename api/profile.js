@@ -43,9 +43,11 @@ export default async function handler(req, res) {
       : await fetchViaInstagram(username);
 
     if (rawJson && rawJson.__status) {
-      res.status(rawJson.__status).json({ error: rawJson.__error || "upstream" });
-      return;
-    }
+  res
+    .status(rawJson.__status)
+    .json({ error: rawJson.__error || "upstream" });
+  return;
+}
 
     const payload = normalizeProfile(rawJson, username);
     if (!payload.username && !payload.photoUrl && payload.followers == null) {
@@ -60,26 +62,56 @@ export default async function handler(req, res) {
   }
 }
 
-/* --------- API de terceiros (RapidAPI) — caminho confiável --------------- */
-/* Provider: Instagram Scraper Stable API (RockSolid).
-   POST /ig_get_fb_profile_v3.php  com body  username_or_url=<@>  */
+/* --------- API de terceiros (RapidAPI) --------- */
+
 async function fetchViaProvider(username) {
-  const host = process.env.RAPIDAPI_HOST || "instagram-scraper-stable-api.p.rapidapi.com";
-  const path = process.env.RAPIDAPI_PROFILE_PATH || "/ig_get_fb_profile_v3.php";
-  const param = process.env.RAPIDAPI_PROFILE_PARAM || "username_or_url";
-  const url = "https://" + host + path;
+  const host =
+    process.env.RAPIDAPI_HOST ||
+    "instagram-scraper-stable-api.p.rapidapi.com";
+
+  const path =
+    process.env.RAPIDAPI_PROFILE_PATH ||
+    "/get_ig_user_about.php";
+
+  const param =
+    process.env.RAPIDAPI_PROFILE_PARAM ||
+    "username_or_url";
+
+  const cleanUsername = String(username)
+    .trim()
+    .replace(/^@+/, "");
+
+  const url =
+    `https://${host}${path}?${param}=${encodeURIComponent(cleanUsername)}`;
 
   const r = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: {
-      "content-type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
       "x-rapidapi-host": host,
     },
-    body: param + "=" + encodeURIComponent(username),
   });
-  if (!r.ok) return { __status: r.status === 404 ? 404 : 502, __error: "provider " + r.status };
-  return r.json();
+
+  const text = await r.text();
+
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = text;
+  }
+
+  if (!r.ok) {
+    return {
+      __status: r.status === 404 ? 404 : 502,
+      __error: "provider " + r.status,
+      details: data,
+    };
+  }
+
+  return data;
 }
 
 /* --------- Endpoint público do IG direto (fallback, costuma dar 429) ----- */
