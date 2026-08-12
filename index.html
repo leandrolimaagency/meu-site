@@ -96,24 +96,206 @@
       var placeholder = document.getElementById("vsl-placeholder");
       var unmute = document.getElementById("vsl-unmute");
 
-      if (CFG.VSL_INICIAL_SRC) {
-        video.src = CFG.VSL_INICIAL_SRC;
+     <script>
+(function () {
 
-        video.addEventListener("loadeddata", function () {
-          placeholder.classList.add("hidden");
-          // autoplay só é permitido mudo; tentamos tocar e oferecemos o som.
-          video.muted = true;
-          var p = video.play();
-          if (p && typeof p.catch === "function") {
-            p.then(function () {
-              unmute.classList.remove("hidden");
-            }).catch(function () {
-              // navegador bloqueou até o autoplay mudo: mostra controles p/ tocar
-              video.setAttribute("controls", "");
-            });
-          } else {
+  var F = window.StalkeaFunnel;
+  var CFG = window.STALKEA_CONFIG || {};
+
+  var video = document.getElementById("vsl");
+  var placeholder = document.getElementById("vsl-placeholder");
+  var unmute = document.getElementById("vsl-unmute");
+  var spy = document.getElementById("spy");
+
+  /*
+  ============================================================
+  CONFIGURAÇÕES
+  ============================================================
+  */
+
+  var CTA_DELAY = 10000; // 10 segundos
+
+  /*
+  ============================================================
+  CARREGA A VSL
+  ============================================================
+  */
+
+  if (CFG.VSL_INICIAL_SRC) {
+
+    video.src = CFG.VSL_INICIAL_SRC;
+
+    /*
+    Nunca mostrar controles nativos.
+    */
+
+    video.removeAttribute("controls");
+
+    /*
+    Quando o vídeo estiver pronto
+    */
+
+    video.addEventListener("loadeddata", function () {
+
+      placeholder.classList.add("hidden");
+
+      /*
+      Primeiro tentamos autoplay COM SOM.
+      */
+
+      video.muted = false;
+      video.volume = 1;
+
+      var playPromise = video.play();
+
+      if (playPromise && typeof playPromise.then === "function") {
+
+        playPromise
+          .then(function () {
+
+            /*
+            O navegador permitiu autoplay com áudio.
+            */
+
+            video.muted = false;
+            video.volume = 1;
+
+            unmute.classList.add("hidden");
+
+          })
+          .catch(function () {
+
+            /*
+            O navegador bloqueou autoplay com áudio.
+
+            Tentamos novamente MUTADO.
+            */
+
+            video.muted = true;
+
+            var mutedPromise = video.play();
+
+            if (
+              mutedPromise &&
+              typeof mutedPromise.catch === "function"
+            ) {
+
+              mutedPromise.catch(function () {
+                console.log("Autoplay bloqueado pelo navegador.");
+              });
+
+            }
+
+            /*
+            Mostra botão para o usuário ativar o som.
+            */
+
             unmute.classList.remove("hidden");
-          }
+
+          });
+
+      }
+
+    });
+
+    /*
+    ============================================================
+    BOTÃO PARA ATIVAR SOM
+    ============================================================
+    */
+
+    unmute.addEventListener("click", function () {
+
+      video.muted = false;
+      video.volume = 1;
+
+      var p = video.play();
+
+      if (p && typeof p.catch === "function") {
+        p.catch(function () {});
+      }
+
+      unmute.classList.add("hidden");
+
+    });
+
+    /*
+    ============================================================
+    CLIQUE NO VÍDEO TAMBÉM ATIVA O SOM
+    ============================================================
+    */
+
+    video.addEventListener("click", function () {
+
+      if (video.muted) {
+
+        video.muted = false;
+        video.volume = 1;
+
+        var p = video.play();
+
+        if (p && typeof p.catch === "function") {
+          p.catch(function () {});
+        }
+
+        unmute.classList.add("hidden");
+
+      }
+
+    });
+
+    /*
+    ============================================================
+    ERRO
+    ============================================================
+    */
+
+    video.addEventListener("error", function () {
+
+      console.log("Erro ao carregar VSL.");
+
+      video.classList.add("hidden");
+
+      placeholder.classList.remove("hidden");
+
+    });
+
+  }
+
+  /*
+  ============================================================
+  CTA
+  ============================================================
+  */
+
+  spy.style.opacity = "0";
+  spy.style.visibility = "hidden";
+  spy.style.transform = "translateY(15px)";
+  spy.style.pointerEvents = "none";
+
+  setTimeout(function () {
+
+    spy.style.opacity = "1";
+    spy.style.visibility = "visible";
+    spy.style.transform = "translateY(0)";
+    spy.style.pointerEvents = "auto";
+
+  }, CTA_DELAY);
+
+  /*
+  ============================================================
+  BOTÃO
+  ============================================================
+  */
+
+  spy.addEventListener("click", function () {
+
+    window.location.href = "usuario.html";
+
+  });
+
+})();
+</script>
         });
 
         video.addEventListener("error", function () {
