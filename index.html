@@ -40,14 +40,31 @@
           conversas, curtidas e atividades escondidas de qualquer perfil.
         </p>
 
-        <div class="video-frame">
-          <video id="vsl" playsinline muted autoplay preload="auto"></video>
-          <button class="vsl-unmute hidden" id="vsl-unmute" type="button">🔊 Toque para ativar o som</button>
-          <div class="video-frame__placeholder" id="vsl-placeholder">
-            <div class="video-frame__play"></div>
-            <div>Sua VSL de qualificação aparece aqui<br /><small>(arquivo: assets/video/vsl-inicial.mp4)</small></div>
-          </div>
-        </div>
+       <div class="video-frame">
+  <video
+    id="vsl"
+    playsinline
+    webkit-playsinline
+    autoplay
+    muted
+    preload="auto"
+    disablepictureinpicture
+    controlslist="nodownload noplaybackrate nofullscreen"
+  ></video>
+
+  <button
+    class="vsl-unmute hidden"
+    id="vsl-unmute"
+    type="button"
+  >
+    🔊 Toque para ativar o som
+  </button>
+
+  <div class="video-frame__placeholder" id="vsl-placeholder">
+    <div class="video-frame__play"></div>
+    <div>Carregando vídeo...</div>
+  </div>
+</div>
 
         <button class="btn btn--primary" id="spy" type="button">
           Espionar agora
