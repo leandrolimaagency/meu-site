@@ -1,6 +1,30 @@
 /*
-  Vercel Serverless Function
-  GET /api/profile?username=algum_perfil
+=============================================================================
+Função serverless (Vercel) — busca perfil PÚBLICO do Instagram
+
+Recebe:
+GET /api/profile?username=algum_perfil
+
+Retorna:
+{
+  username,
+  displayName,
+  photoUrl,
+  followers,
+  following,
+  posts,
+  isPrivate,
+  isVerified
+}
+
+Agora utiliza:
+Apify — Instagram Profile Scraper
+
+A chave NÃO fica neste arquivo.
+Ela deve estar na Vercel como:
+
+APIFY_API_TOKEN
+=============================================================================
 */
 
 const IG_APP_ID = "936619743392459";
@@ -24,18 +48,38 @@ module.exports = async function handler(req, res) {
     .slice(0, 30);
 
   if (!username) {
-    res.status(400).json({ error: "missing username" });
+    res.status(400).json({
+      error: "missing username",
+    });
     return;
   }
 
   try {
     let rawJson;
 
-    if (process.env.RAPIDAPI_KEY) {
-      rawJson = await fetchViaProvider(username);
+    /*
+    =========================================================================
+    APIFY
+    =========================================================================
+    */
+
+    if (process.env.APIFY_API_TOKEN) {
+      rawJson = await fetchViaApify(username);
     } else {
+      /*
+      =========================================================================
+      FALLBACK — Instagram direto
+      =========================================================================
+      */
+
       rawJson = await fetchViaInstagram(username);
     }
+
+    /*
+    =========================================================================
+    TRATAMENTO DE ERROS
+    =========================================================================
+    */
 
     if (rawJson && rawJson.__status) {
       res.status(rawJson.__status).json({
@@ -43,6 +87,12 @@ module.exports = async function handler(req, res) {
       });
       return;
     }
+
+    /*
+    =========================================================================
+    NORMALIZA OS DADOS DA APIFY
+    =========================================================================
+    */
 
     const payload = normalizeProfile(rawJson, username);
 
@@ -68,56 +118,134 @@ module.exports = async function handler(req, res) {
 
     res.status(502).json({
       error: "fetch failed",
+      details: err?.message || "unknown error",
     });
   }
 };
 
 
 /*
-  RapidAPI
-  Instagram Scraper Stable API
-  POST /ig_get_fb_profile_v3.php
+=============================================================================
+APIFY — Instagram Profile Scraper
+=============================================================================
 */
-async function fetchViaProvider(username) {
-  const host =
-    process.env.RAPIDAPI_HOST ||
-    "instagram-scraper-stable-api.p.rapidapi.com";
 
-  const url =
-    "https://" +
-    host +
-    "/ig_get_fb_profile_v3.php";
+async function fetchViaApify(username) {
+  const token = process.env.APIFY_API_TOKEN;
 
-  const r = await fetch(url, {
-    method: "POST",
-
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "x-rapidapi-key": process.env.RAPIDAPI_KEY,
-      "x-rapidapi-host": host,
-    },
-
-    body: new URLSearchParams({
-      username_or_url: username,
-    }),
-  });
-
-  if (!r.ok) {
-    console.error("RapidAPI status:", r.status);
-
+  if (!token) {
     return {
-      __status: r.status === 404 ? 404 : 502,
-      __error: "provider " + r.status,
+      __status: 500,
+      __error: "APIFY_API_TOKEN não configurado",
     };
   }
 
-  return r.json();
+  /*
+  Input enviado para o Actor da Apify.
+  */
+
+  const input = {
+    usernames: [username],
+    resultsLimit: 1,
+  };
+
+  /*
+  Inicia o Actor e aguarda a execução terminar.
+  */
+
+  const runUrl =
+    "https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?waitForFinish=120";
+
+  const runResponse = await fetch(runUrl, {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+
+    body: JSON.stringify(input),
+  });
+
+  if (!runResponse.ok) {
+    const text = await runResponse.text();
+
+    console.error("APIFY RUN ERROR:", text);
+
+    return {
+      __status: runResponse.status,
+      __error: "Apify: " + text,
+    };
+  }
+
+  const run = await runResponse.json();
+
+  /*
+  ID do Dataset gerado pelo Actor.
+  */
+
+  const datasetId = run?.data?.defaultDatasetId;
+
+  if (!datasetId) {
+    return {
+      __status: 502,
+      __error: "Apify não retornou dataset",
+    };
+  }
+
+  /*
+  Busca os resultados do Dataset.
+  */
+
+  const datasetUrl =
+    `https://api.apify.com/v2/datasets/${datasetId}/items?clean=true`;
+
+  const datasetResponse = await fetch(datasetUrl, {
+    method: "GET",
+
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!datasetResponse.ok) {
+    const text = await datasetResponse.text();
+
+    console.error("APIFY DATASET ERROR:", text);
+
+    return {
+      __status: datasetResponse.status,
+      __error: "Apify dataset: " + text,
+    };
+  }
+
+  const items = await datasetResponse.json();
+
+  /*
+  Verifica se o Actor encontrou algum perfil.
+  */
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return {
+      __status: 404,
+      __error: "Perfil não encontrado",
+    };
+  }
+
+  /*
+  Retorna o primeiro perfil encontrado.
+  */
+
+  return items[0];
 }
 
 
 /*
-  Fallback direto do Instagram
+=============================================================================
+FALLBACK — Instagram direto
+=============================================================================
 */
+
 async function fetchViaInstagram(username) {
   const apiUrl =
     "https://i.instagram.com/api/v1/users/web_profile_info/?username=" +
@@ -151,11 +279,28 @@ async function fetchViaInstagram(username) {
 
 
 /*
-  Converte a resposta da RapidAPI
-  para o formato que seu frontend espera.
+=============================================================================
+NORMALIZA OS DADOS DA APIFY
+=============================================================================
+
+A Apify retorna campos como:
+
+username
+fullName
+followersCount
+followsCount
+profilePicUrlHD
+profilePicUrl
+private
+verified
+postsCount
+
+Transformamos para o formato que seu site já utiliza.
+=============================================================================
 */
+
 function normalizeProfile(json, fallbackUser) {
-  const u = locateUser(json) || {};
+  const u = json || {};
 
   return {
     username:
@@ -163,122 +308,55 @@ function normalizeProfile(json, fallbackUser) {
       fallbackUser,
 
     displayName:
-      u.full_name ||
+      u.fullName ||
       u.username ||
       fallbackUser,
 
     photoUrl:
-      u.hd_profile_pic_url_info?.url ||
-      u.profile_pic_url ||
+      u.profilePicUrlHD ||
+      u.profilePicUrl ||
       "",
 
     followers:
-      toNum(u.follower_count),
+      toNum(u.followersCount),
 
     following:
-      toNum(u.following_count),
+      toNum(u.followsCount),
 
     posts:
-      toNum(u.media_count),
+      toNum(
+        u.postsCount ??
+        u.mediaCount ??
+        u.posts
+      ),
 
     isPrivate:
-      Boolean(u.is_private),
+      Boolean(u.private),
 
     isVerified:
-      Boolean(u.is_verified),
+      Boolean(u.verified),
   };
 }
 
 
 /*
-  Localiza o objeto do usuário
-  dentro da resposta da API.
+=============================================================================
+CONVERSÃO DE NÚMEROS
+=============================================================================
 */
-function locateUser(json) {
-  if (!json || typeof json !== "object") {
+
+function toNum(v) {
+  if (v == null || v === "") {
     return null;
   }
 
-  const candidates = [
-    "data.user",
-    "data.data.user",
-    "graphql.user",
-    "user",
-    "data",
-    "result",
-    "response",
-    "profile",
-    "data.data",
-  ];
-
-  for (const path of candidates) {
-    const value = getPath(json, path);
-
-    if (
-      value &&
-      typeof value === "object" &&
-      looksLikeUser(value)
-    ) {
-      return value;
-    }
+  if (typeof v === "number") {
+    return v;
   }
 
-  if (looksLikeUser(json)) {
-    return json;
-  }
-
-  return null;
-}
-
-
-/*
-  Verifica se o objeto parece ser um perfil.
-*/
-function looksLikeUser(obj) {
-  if (!obj || typeof obj !== "object") {
-    return false;
-  }
-
-  return (
-    "username" in obj ||
-    "full_name" in obj ||
-    "profile_pic_url" in obj ||
-    "follower_count" in obj ||
-    "following_count" in obj ||
-    "media_count" in obj
-  );
-}
-
-
-/*
-  Acessa propriedades como:
-  "data.user.username"
-*/
-function getPath(obj, path) {
-  return path
-    .split(".")
-    .reduce(
-      (acc, key) => (acc == null ? acc : acc[key]),
-      obj
-    );
-}
-
-
-/*
-  Converte valores para número.
-*/
-function toNum(value) {
-  if (value == null || value === "") {
-    return null;
-  }
-
-  if (typeof value === "number") {
-    return value;
-  }
-
-  const number = Number(
-    String(value).replace(/[^\d.]/g, "")
+  const n = Number(
+    String(v).replace(/[^\d.]/g, "")
   );
 
-  return Number.isNaN(number) ? null : number;
+  return Number.isNaN(n) ? null : n;
 }
