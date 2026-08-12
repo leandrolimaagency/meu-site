@@ -1,322 +1,507 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
   <!-- Meta Pixel Code -->
   <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '2965248043809874');
-  fbq('track', 'PageView');
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;
+    n.push=n;
+    n.loaded=!0;
+    n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e);
+    t.async=!0;
+    t.src=v;
+    s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}
+    (window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '2965248043809874');
+    fbq('track', 'PageView');
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
-  /></noscript>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
+    />
+  </noscript>
   <!-- End Meta Pixel Code -->
+
+
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <meta name="robots" content="noindex,nofollow" />
-  <title>STALKEA | Descubra o que acontece no Instagram do seu cônjuge</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
-  <link rel="stylesheet" href="assets/styles.css" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
+
+  <meta
+    name="robots"
+    content="noindex,nofollow"
+  />
+
+  <title>
+    STALKEA | Descubra o que acontece no Instagram do seu cônjuge
+  </title>
+
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  />
+
+  <link
+    rel="stylesheet"
+    href="assets/styles.css"
+  />
+
 </head>
+
+
 <body>
+
   <main class="wrap">
-    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="logo">
+      <strong>STALKEA</strong>
+    </div>
+
 
     <div class="card">
-      <div class="pad">
-        <div class="pill pill--live"><span class="dot"></span> ANÁLISE EM TEMPO REAL</div>
 
-        <h1 class="title">Descubra o que seu cônjuge faz quando está no Instagram</h1>
+      <div class="pad">
+
+        <div class="pill pill--live">
+          <span class="dot"></span>
+          ANÁLISE EM TEMPO REAL
+        </div>
+
+
+        <h1 class="title">
+          Descubra o que seu cônjuge faz quando está no Instagram
+        </h1>
+
+
         <p class="subtitle">
           Assista ao vídeo abaixo e veja como a nossa análise consegue revelar
           conversas, curtidas e atividades escondidas de qualquer perfil.
         </p>
 
-       <div class="video-frame">
-  <video
-    id="vsl"
-    playsinline
-    webkit-playsinline
-    autoplay
-    muted
-    preload="auto"
-    disablepictureinpicture
-    controlslist="nodownload noplaybackrate nofullscreen"
-  ></video>
 
-  <button
-    class="vsl-unmute hidden"
-    id="vsl-unmute"
-    type="button"
-  >
-    🔊 Toque para ativar o som
-  </button>
+        <!-- =====================================================
+             VSL
+        ====================================================== -->
 
-  <div class="video-frame__placeholder" id="vsl-placeholder">
-    <div class="video-frame__play"></div>
-    <div>Carregando vídeo...</div>
-  </div>
-</div>
+        <div class="video-frame">
 
-        <button class="btn btn--primary" id="spy" type="button">
-          Espionar agora
-          <span class="btn__sub">Análise 100% anônima e em tempo real</span>
-        </button>
+          <video
+            id="vsl"
+            playsinline
+            webkit-playsinline
+            autoplay
+            muted
+            preload="auto"
+            disablepictureinpicture
+            controlslist="nodownload noplaybackrate nofullscreen"
+          ></video>
 
-        <div class="trust">
-          <span>🔒 Conexão segura</span>
-          <span>👁️ Modo invisível</span>
-          <span>⚡ Resultado imediato</span>
+
+          <!-- Botão para ativar som quando o navegador bloquear autoplay com áudio -->
+          <button
+            class="vsl-unmute hidden"
+            id="vsl-unmute"
+            type="button"
+          >
+            🔊 Toque para ativar o som
+          </button>
+
+
+          <!-- Placeholder -->
+          <div
+            class="video-frame__placeholder"
+            id="vsl-placeholder"
+          >
+            <div class="video-frame__play"></div>
+
+            <div>
+              Carregando vídeo...
+            </div>
+          </div>
+
         </div>
 
+
+        <!-- =====================================================
+             CTA
+        ====================================================== -->
+
+        <button
+          class="btn btn--primary"
+          id="spy"
+          type="button"
+        >
+          Espionar agora
+
+          <span class="btn__sub">
+            Análise 100% anônima e em tempo real
+          </span>
+        </button>
+
+
+        <div class="trust">
+
+          <span>
+            🔒 Conexão segura
+          </span>
+
+          <span>
+            👁️ Modo invisível
+          </span>
+
+          <span>
+            ⚡ Resultado imediato
+          </span>
+
+        </div>
+
+
         <p class="footer-note">
-          Os dados são processados em tempo real e permanecem confidenciais durante toda a análise.
+          Os dados são processados em tempo real e permanecem confidenciais
+          durante toda a análise.
         </p>
+
       </div>
+
     </div>
+
   </main>
 
+
+  <!-- Configuração -->
   <script src="assets/config.js"></script>
+
+  <!-- Funil -->
   <script src="assets/funnel.js"></script>
+
+
+  <!-- =========================================================
+       CONTROLE DA VSL + CTA
+  ========================================================== -->
+
   <script>
+
     (function () {
-      var F = window.StalkeaFunnel;
+
       var CFG = window.STALKEA_CONFIG || {};
 
-      // Carrega o MP4 da VSL, se existir; senão mantém o placeholder.
       var video = document.getElementById("vsl");
-      var placeholder = document.getElementById("vsl-placeholder");
-      var unmute = document.getElementById("vsl-unmute");
 
-     <script>
-(function () {
+      var placeholder =
+        document.getElementById("vsl-placeholder");
 
-  var F = window.StalkeaFunnel;
-  var CFG = window.STALKEA_CONFIG || {};
+      var unmute =
+        document.getElementById("vsl-unmute");
 
-  var video = document.getElementById("vsl");
-  var placeholder = document.getElementById("vsl-placeholder");
-  var unmute = document.getElementById("vsl-unmute");
-  var spy = document.getElementById("spy");
+      var spy =
+        document.getElementById("spy");
 
-  /*
-  ============================================================
-  CONFIGURAÇÕES
-  ============================================================
-  */
-
-  var CTA_DELAY = 10000; // 10 segundos
-
-  /*
-  ============================================================
-  CARREGA A VSL
-  ============================================================
-  */
-
-  if (CFG.VSL_INICIAL_SRC) {
-
-    video.src = CFG.VSL_INICIAL_SRC;
-
-    /*
-    Nunca mostrar controles nativos.
-    */
-
-    video.removeAttribute("controls");
-
-    /*
-    Quando o vídeo estiver pronto
-    */
-
-    video.addEventListener("loadeddata", function () {
-
-      placeholder.classList.add("hidden");
 
       /*
-      Primeiro tentamos autoplay COM SOM.
+      ==========================================================
+      CONFIGURAÇÕES
+      ==========================================================
       */
 
-      video.muted = false;
-      video.volume = 1;
+      var CTA_DELAY = 10000;
 
-      var playPromise = video.play();
 
-      if (playPromise && typeof playPromise.then === "function") {
+      /*
+      ==========================================================
+      GARANTE QUE OS CONTROLES NATIVOS NUNCA APAREÇAM
+      ==========================================================
+      */
 
-        playPromise
-          .then(function () {
+      video.removeAttribute("controls");
+
+
+      /*
+      ==========================================================
+      CARREGA A VSL
+      ==========================================================
+      */
+
+      if (CFG.VSL_INICIAL_SRC) {
+
+        video.src = CFG.VSL_INICIAL_SRC;
+
+
+        /*
+        ----------------------------------------------------------
+        Vídeo carregado
+        ----------------------------------------------------------
+        */
+
+        video.addEventListener(
+          "loadeddata",
+          function () {
+
+            placeholder.classList.add("hidden");
+
 
             /*
-            O navegador permitiu autoplay com áudio.
+            Tentamos primeiro reproduzir com áudio.
             */
 
             video.muted = false;
             video.volume = 1;
 
-            unmute.classList.add("hidden");
 
-          })
-          .catch(function () {
+            var playPromise = video.play();
+
 
             /*
-            O navegador bloqueou autoplay com áudio.
-
-            Tentamos novamente MUTADO.
+            ------------------------------------------------------
+            AUTOPLAY COM ÁUDIO
+            ------------------------------------------------------
             */
 
-            video.muted = true;
-
-            var mutedPromise = video.play();
-
             if (
-              mutedPromise &&
-              typeof mutedPromise.catch === "function"
+              playPromise &&
+              typeof playPromise.then === "function"
             ) {
 
-              mutedPromise.catch(function () {
-                console.log("Autoplay bloqueado pelo navegador.");
-              });
+              playPromise
+
+                .then(function () {
+
+                  /*
+                  Navegador permitiu áudio.
+                  */
+
+                  video.muted = false;
+                  video.volume = 1;
+
+                  unmute.classList.add("hidden");
+
+                })
+
+
+                .catch(function () {
+
+                  /*
+                  ------------------------------------------------
+                  Navegador bloqueou autoplay com áudio.
+
+                  Tentamos autoplay mutado.
+                  ------------------------------------------------
+                  */
+
+                  video.muted = true;
+
+
+                  var mutedPromise =
+                    video.play();
+
+
+                  if (
+                    mutedPromise &&
+                    typeof mutedPromise.catch === "function"
+                  ) {
+
+                    mutedPromise.catch(function () {
+
+                      console.log(
+                        "Autoplay bloqueado pelo navegador."
+                      );
+
+                    });
+
+                  }
+
+
+                  /*
+                  Mostra botão para ativar áudio.
+                  */
+
+                  unmute.classList.remove("hidden");
+
+                });
 
             }
 
-            /*
-            Mostra botão para o usuário ativar o som.
-            */
+          }
+        );
 
-            unmute.classList.remove("hidden");
 
-          });
+        /*
+        ----------------------------------------------------------
+        ERRO NO VÍDEO
+        ----------------------------------------------------------
+        */
+
+        video.addEventListener(
+          "error",
+          function () {
+
+            console.log(
+              "Erro ao carregar a VSL."
+            );
+
+            video.classList.add("hidden");
+
+            placeholder.classList.remove("hidden");
+
+          }
+        );
+
+
+        /*
+        ==========================================================
+        ATIVAR SOM
+        ==========================================================
+        */
+
+        unmute.addEventListener(
+          "click",
+          function () {
+
+            video.muted = false;
+            video.volume = 1;
+
+
+            var playPromise =
+              video.play();
+
+
+            if (
+              playPromise &&
+              typeof playPromise.catch === "function"
+            ) {
+
+              playPromise.catch(function () {});
+
+            }
+
+
+            unmute.classList.add("hidden");
+
+          }
+        );
+
+
+        /*
+        ==========================================================
+        TOQUE NO VÍDEO
+        ==========================================================
+        */
+
+        video.addEventListener(
+          "click",
+          function () {
+
+            if (video.muted) {
+
+              video.muted = false;
+              video.volume = 1;
+
+
+              var playPromise =
+                video.play();
+
+
+              if (
+                playPromise &&
+                typeof playPromise.catch === "function"
+              ) {
+
+                playPromise.catch(function () {});
+
+              }
+
+
+              unmute.classList.add("hidden");
+
+            }
+
+          }
+        );
 
       }
 
-    });
 
-    /*
-    ============================================================
-    BOTÃO PARA ATIVAR SOM
-    ============================================================
-    */
+      /*
+      ==========================================================
+      CTA ESCONDIDO INICIALMENTE
+      ==========================================================
+      */
 
-    unmute.addEventListener("click", function () {
+      spy.style.opacity = "0";
 
-      video.muted = false;
-      video.volume = 1;
+      spy.style.visibility = "hidden";
 
-      var p = video.play();
+      spy.style.transform =
+        "translateY(15px)";
 
-      if (p && typeof p.catch === "function") {
-        p.catch(function () {});
-      }
+      spy.style.pointerEvents =
+        "none";
 
-      unmute.classList.add("hidden");
 
-    });
+      /*
+      ==========================================================
+      MOSTRA CTA DEPOIS DO DELAY
+      ==========================================================
+      */
 
-    /*
-    ============================================================
-    CLIQUE NO VÍDEO TAMBÉM ATIVA O SOM
-    ============================================================
-    */
+      setTimeout(
+        function () {
 
-    video.addEventListener("click", function () {
+          spy.style.opacity = "1";
 
-      if (video.muted) {
+          spy.style.visibility =
+            "visible";
 
-        video.muted = false;
-        video.volume = 1;
+          spy.style.transform =
+            "translateY(0)";
 
-        var p = video.play();
+          spy.style.pointerEvents =
+            "auto";
 
-        if (p && typeof p.catch === "function") {
-          p.catch(function () {});
+        },
+        CTA_DELAY
+      );
+
+
+      /*
+      ==========================================================
+      BOTÃO
+      ==========================================================
+      */
+
+      spy.addEventListener(
+        "click",
+        function () {
+
+          window.location.href =
+            "usuario.html";
+
         }
+      );
 
-        unmute.classList.add("hidden");
-
-      }
-
-    });
-
-    /*
-    ============================================================
-    ERRO
-    ============================================================
-    */
-
-    video.addEventListener("error", function () {
-
-      console.log("Erro ao carregar VSL.");
-
-      video.classList.add("hidden");
-
-      placeholder.classList.remove("hidden");
-
-    });
-
-  }
-
-  /*
-  ============================================================
-  CTA
-  ============================================================
-  */
-
-  spy.style.opacity = "0";
-  spy.style.visibility = "hidden";
-  spy.style.transform = "translateY(15px)";
-  spy.style.pointerEvents = "none";
-
-  setTimeout(function () {
-
-    spy.style.opacity = "1";
-    spy.style.visibility = "visible";
-    spy.style.transform = "translateY(0)";
-    spy.style.pointerEvents = "auto";
-
-  }, CTA_DELAY);
-
-  /*
-  ============================================================
-  BOTÃO
-  ============================================================
-  */
-
-  spy.addEventListener("click", function () {
-
-    window.location.href = "usuario.html";
-
-  });
-
-})();
-</script>
-        });
-
-        video.addEventListener("error", function () {
-          // arquivo ainda não existe: segue com placeholder visível
-          video.classList.add("hidden");
-        });
-
-        // 1 toque ativa o som e some com o botão.
-        unmute.addEventListener("click", function () {
-          video.muted = false;
-          video.volume = 1;
-          video.play();
-          video.setAttribute("controls", "");
-          unmute.classList.add("hidden");
-        });
-      }
-
-      document.getElementById("spy").addEventListener("click", function () {
-        window.location.href = "usuario.html";
-      });
     })();
+
   </script>
+
 </body>
 </html>
