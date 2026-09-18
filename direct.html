@@ -323,23 +323,27 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       }
 
       function buildDMList(loadingOnly) {
-        var previewPool = [
-          'Encaminhou um reel...',
-          'Reagiu com 👍 a sua mensagem',
-          'Respondeu seu story',
-          'Mandou uma foto',
-          'Digitando...'
+        var messageTemplates = [
+          { preview: 'ana adivinha o que vc esqueceu aqui? kkkkk', time: 'Agora' },
+          { preview: 'Encaminhou um reel de jonas.milgrau', time: '33 min' },
+          { preview: 'Blz depois a gente se fala', time: '2 h' },
+          { preview: 'Reagiu com 👍 à sua mensagem', time: '6 h' },
+          { preview: '4 novas mensagens', time: '22 h' },
+          { preview: 'Enviou um reel de dr.diegooficial', time: '2 d' },
+          { preview: 'Enviado sexta-feira', time: '2 d' }
         ];
 
-        var source = filterDmUsers(networkPeople).slice(0, 18).map(function (p, idx) {
+        var source = filterDmUsers(networkPeople).slice(0, messageTemplates.length).map(function (p, idx) {
+          var template = messageTemplates[idx];
           return {
             name: p.username,
+            displayName: F.escapeHtml(String(p.username || '').slice(0, 3) + '*****'),
             verified: !!p.isVerified,
-            online: idx % 2 === 0,
-            preview: previewPool[idx % previewPool.length],
-            time: idx === 0 ? 'agora' : (idx < 4 ? (idx * 7) + ' min' : (idx < 10 ? (idx - 3) + ' h' : (idx - 9) + ' d')),
-            unread: idx % 5 === 1 ? (idx % 4) + 1 : 0,
-            cam: idx % 3 === 0,
+            online: idx < 2,
+            preview: template.preview,
+            time: template.time,
+            unread: idx === 4 ? 4 : 0,
+            cam: idx === 0 || idx === 3,
             profilePicUrl: p.photoUrl || ''
           };
         });
@@ -369,7 +373,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
                 (c.online ? '<span class="dm-online"></span>' : '') +
               '</div>' +
               '<div class="dm-main">' +
-                '<div class="dm-name">' + F.escapeHtml(c.name) + (c.verified ? '<span class="vf">\u2714</span>' : '') + '</div>' +
+                '<div class="dm-name">' + c.displayName + (c.verified ? '<span class="vf">\u2714</span>' : '') + '</div>' +
                 '<div class="dm-preview ' + (c.unread ? 'unread' : '') + '">' +
                   '<span class="txt">' + F.escapeHtml(c.preview) + '</span>' +
                   '<span>\u00B7 ' + F.escapeHtml(c.time) + '</span>' +
