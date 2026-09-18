@@ -1,0 +1,36 @@
+# O deploy por CLI (vercel --prod) sobe o working tree, nao o que esta no git.
+# Entao o .gitignore NAO protege nada aqui -- este arquivo e que protege.
+#
+# O video da VSL (~96MB) saiu do deploy: subir ele a cada publicacao
+# travava o upload da CLI. Agora e servido pelo Vercel Blob, e o endereco
+# fica em VSL_INICIAL_SRC (assets/config.js).
+
+# Segredos: nunca devem ir para um host estatico
+.env
+.env.*
+worker/.env
+worker/.env.*
+
+# Metadados de ferramenta
+.git
+.gitignore
+.vercel
+.claude
+.vscode
+
+# Cloudflare Worker: codigo de outra plataforma, nao roda na Vercel
+worker/
+
+# Servidor usado apenas no ambiente local. Na Vercel, os HTML devem ser
+# publicados como arquivos estaticos e as funcoes ficam exclusivamente em /api.
+server.js
+
+# Video da VSL: servido pelo Blob, nao pelo deploy
+assets/video/
+
+# Cache e lixo local
+.wrangler
+node_modules
+*.log
+.DS_Store
+Thumbs.db

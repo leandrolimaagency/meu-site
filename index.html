@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2965248043809874');
+  fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Code -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>STALKEA | Descubra o que acontece no Instagram do seu c&ocirc;njuge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap&subset=latin,latin-ext" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="assets/hacker-bg.js" defer></script>
+  <style>
+    body {
+      background:
+        radial-gradient(circle at top, rgba(74,55,182,.22), transparent 35%),
+        linear-gradient(180deg, #040607, #040607);
+    }
+    .hero { margin-bottom: 14px; }
+    .hero .title { margin-bottom: 10px; }
+    .title-word { display: inline-block; opacity: 0; transform: translateY(8px); transition: opacity .28s ease, transform .28s ease; }
+    .title-word.is-visible { opacity: 1; transform: translateY(0); }
+    .title-word--emphasis { color: #b9a7ff; }
+    .cta-shell { padding: 18px 18px 14px; }
+    .tiny { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
+    .hero-kicker { margin: -2px 0 14px; color: #d7d0ff; text-align: center; font-size: 13px; line-height: 1.45; }
+    .hero-proof { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .hero-proof span { padding: 7px 10px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; color: #e5e7eb; background: rgba(255,255,255,.04); font-size: 11px; font-weight: 700; }
+    .live-count { width: min(100%, 460px); margin: 0 auto; padding: 12px 16px; border: 1px solid rgba(171,88,244,.28); border-radius: 16px; background: rgba(171,88,244,.09); text-align: center; color: #e8e3ff; font-size: 13px; font-weight: 700; box-shadow: 0 12px 36px rgba(74,55,182,.15); }
+    .live-count strong { color: #fff; font-variant-numeric: tabular-nums; }
+    .live-count small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
+  /></noscript>
+  <main class="wrap">
+    <div class="logo"><strong>STALKEA</strong></div>
+
+    <div class="card hero">
+      <div class="pad cta-shell">
+        <div class="pill pill--live"><span class="dot"></span> ACESSO LIBERADO AGORA</div>
+        <h1 class="title" id="animated-title">Descubra o que acontece no Instagram quando seu c&ocirc;njuge esconde algo de voc&ecirc;</h1>
+        <p class="hero-kicker">A janela de acesso est&aacute; aberta agora. Veja os sinais p&uacute;blicos que merecem sua aten&ccedil;&atilde;o.</p>
+
+        <button class="btn btn--primary hero-cta" id="next-step" type="button">
+          ASSINE PARA DESCOBRIR TUDO
+          <span class="btn__sub">Acesso imediato</span>
+        </button>
+        <div class="hero-proof" aria-label="Condi&ccedil;&otilde;es de acesso">
+          <span>Sem senha</span>
+          <span>100% an&ocirc;nimo</span>
+          <span>Teste gr&aacute;tis</span>
+        </div>
+        <div class="tiny">Nenhuma senha &eacute; solicitada, lida ou armazenada.</div>
+      </div>
+    </div>
+    <div class="live-count" aria-live="polite">
+      <strong id="profile-count">+127.988 perfis investigados hoje</strong>
+      <small id="current-day">Atualizado agora</small>
+    </div>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/funnel.js"></script>
+  <script>
+    (function () {
+      var F = window.StalkeaFunnel || {};
+      if (typeof F.clearStoredUsername === 'function') {
+        F.clearStoredUsername();
+      }
+
+      var title = document.getElementById('animated-title');
+      var words = title.textContent.trim().split(/\s+/);
+      title.textContent = '';
+      words.forEach(function (word, index) {
+        var span = document.createElement('span');
+        span.className = 'title-word';
+        if (word.replace(/[^a-zà-ÿ]/gi, '').toLowerCase() === 'cônjuge') {
+          span.classList.add('title-word--emphasis');
+        }
+        span.textContent = word;
+        title.appendChild(span);
+        if (index < words.length - 1) title.appendChild(document.createTextNode(' '));
+        setTimeout(function () { span.classList.add('is-visible'); }, 110 * index + 80);
+      });
+
+      document.getElementById('next-step').addEventListener('click', function () {
+        var username = typeof F.getUsername === 'function' ? F.getUsername() : '';
+        if (typeof F.withUsername === 'function') {
+          window.location.href = F.withUsername('usuario.html', username);
+          return;
+        }
+
+        var target = 'usuario.html';
+        if (username) {
+          target += '?u=' + encodeURIComponent(username);
+        }
+        window.location.href = target;
+      });
+
+      var count = 127988;
+      var countEl = document.getElementById('profile-count');
+      var dayEl = document.getElementById('current-day');
+      var days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+      function updateCounter() {
+        var now = new Date();
+        count += Math.floor(Math.random() * 4) + 1;
+        countEl.textContent = '+' + count.toLocaleString('pt-BR') + ' perfis investigados hoje';
+        dayEl.textContent = days[now.getDay()] + ' · atualizado agora';
+      }
+      updateCounter();
+      setInterval(updateCounter, 5200);
+    })();
+  </script>
+</body>
+</html>
