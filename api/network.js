@@ -299,7 +299,7 @@ async function fetchFollowingViaApify(username) {
       method: "POST",
       headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
       body: JSON.stringify((() => {
-        const input = { usernames: [username] };
+        const input = { username, usernames: [username] };
         if (process.env.APIFY_INSTAGRAM_COOKIES) {
           input.cookies = process.env.APIFY_INSTAGRAM_COOKIES;
         }
@@ -323,7 +323,7 @@ async function fetchFollowingViaApify(username) {
     username,
     fullName: "",
     photoUrl: "",
-    following: (Array.isArray(items) ? items : []).map(normalizeNetworkUser).filter(Boolean),
+    following: collectFollowingRows(items).map(normalizeNetworkUser).filter(Boolean),
     followers: [],
     publicPosts: [],
     source: "apify-following",
