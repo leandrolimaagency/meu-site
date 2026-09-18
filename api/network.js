@@ -441,14 +441,22 @@ module.exports = async function handler(req, res) {
     let lastError = null;
     let normalized = null;
 
-    // O proxy remoto e a fonte que ja retorna a lista completa com as fotos
-    // normalizadas. Consulte-o primeiro para evitar uma cascata lenta de
-    // tentativas que deixa o frontend em estado vazio.
-    try {
-      const allPayload = await fetchProxyPayload(username, "all", 12000);
-      normalized = normalizePayload(allPayload, username);
-    } catch (error) {
-      lastError = error;
+    // O Actor dedicado e a fonte oficial da lista de seguidos.
+    if (process.env.APIFY_API_TOKEN) {
+      try {
+        normalized = await fetchFollowingViaApify(username);
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (!normalized || !normalized.following.length) {
+      try {
+        const allPayload = await fetchProxyPayload(username, "all", 12000);
+        normalized = normalizePayload(allPayload, username);
+      } catch (error) {
+        lastError = lastError || error;
+      }
     }
 
     try {
@@ -457,14 +465,6 @@ module.exports = async function handler(req, res) {
       }
     } catch (error) {
       lastError = lastError || error;
-    }
-
-    if ((!normalized || !normalized.following.length) && process.env.APIFY_API_TOKEN) {
-      try {
-        normalized = await fetchFollowingViaApify(username);
-      } catch (error) {
-        lastError = error;
-      }
     }
 
     if (!normalized || !normalized.following.length) {
