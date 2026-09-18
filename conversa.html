@@ -231,6 +231,11 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       var contactMedia = [];
       var contactMediaItems = [];
 
+      function maskedContactName(value) {
+        var clean = F.sanitizeUsername(value || "");
+        return clean ? clean.slice(0, 3) + "*****" : "Contato";
+      }
+
       function partyPhoto(seed, idx) {
         var list = [
           'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
@@ -301,10 +306,8 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
         };
       }
 
-      thread = expandThread(thread, conv && conv.name, convIdx);
-
       // cabeçalho
-      document.getElementById("cv-name").textContent = conv.name;
+      document.getElementById("cv-name").textContent = maskedContactName(conv.name);
       document.getElementById("cv-status").textContent = thread.status || "Ativo recentemente";
       // avatar do contato: foto real embaçada (fallback = iniciais)
       var cvAva = document.getElementById("cv-ava");
