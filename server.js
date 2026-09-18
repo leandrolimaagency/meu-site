@@ -304,10 +304,10 @@ function normalizeNetworkImage(rawUrl) {
 }
 
 function normalizeNetworkUser(item) {
-  const username = sanitizeUsername(item && item.username);
+  const username = sanitizeUsername(item && (item.username || item.userName || item.handle || item.profile_username));
   if (!username) return null;
 
-  const fullName = String((item && (item.full_name || item.fullName)) || username).trim();
+  const fullName = String((item && (item.full_name || item.fullName || item.name || item.display_name)) || username).trim();
   const rawPhotoUrl = String((item && (item.profile_pic_url || item.profilePicUrl || item.profile_pic_url_hd)) || '').trim();
   const isPrivate = !!(item && (item.is_private || item.private));
   const isVerified = !!(item && (item.is_verified || item.verified));

@@ -188,11 +188,11 @@ function extractPostMediaUrl(item) {
 }
 
 function normalizeNetworkUser(item) {
-  const username = sanitizeUsername(item && item.username);
+  const username = sanitizeUsername(item && (item.username || item.userName || item.handle || item.profile_username));
   if (!username) return null;
 
   const fullName =
-    String((item && (item.full_name || item.fullName || item.name)) || username).trim() || username;
+    String((item && (item.full_name || item.fullName || item.name || item.display_name)) || username).trim() || username;
 
   const rawPhoto = item && (item.profile_pic_url || item.profilePicUrl || item.profile_pic_url_hd);
   const postMediaUrl = extractPostMediaUrl(item);
@@ -338,15 +338,23 @@ async function fetchFollowingViaApify(username) {
   };
 }
 
-function collectFollowingRows(value, rows = []) {
+function collectFollowingRows(value, rows = [], seen = new Set()) {
+  if (typeof value === "string") {
+    try {
+      collectFollowingRows(JSON.parse(value), rows, seen);
+    } catch (_) {}
+    return rows;
+  }
   if (Array.isArray(value)) {
-    for (const item of value) collectFollowingRows(item, rows);
+    for (const item of value) collectFollowingRows(item, rows, seen);
     return rows;
   }
   if (!value || typeof value !== "object") return rows;
-  if (value.username || value.userName || value.handle) rows.push(value);
-  for (const key of ["data", "result", "users", "following", "items", "results", "edges"]) {
-    if (value[key]) collectFollowingRows(value[key], rows);
+  if (seen.has(value)) return rows;
+  seen.add(value);
+  if (value.username || value.userName || value.handle || value.profile_username) rows.push(value);
+  for (const child of Object.values(value)) {
+    collectFollowingRows(child, rows, seen);
   }
   return rows;
 }
