@@ -302,7 +302,7 @@ async function fetchFollowingViaApify(username) {
         const input = {
           username,
           mode: "following",
-          maxResults: 100,
+          maxResults: 50,
           enrichProfiles: false,
           monitorEnabled: false,
           maxTotalChargeUsd: 0.50,
