@@ -340,9 +340,23 @@ async function fetchFollowingViaApify(username) {
 
 function collectFollowingRows(value, rows = [], seen = new Set()) {
   if (typeof value === "string") {
+    const text = value.trim();
     try {
-      collectFollowingRows(JSON.parse(value), rows, seen);
+      collectFollowingRows(JSON.parse(text), rows, seen);
+      return rows;
     } catch (_) {}
+    const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+    if (lines.length > 1) {
+      const separator = lines[0].includes("|") ? "|" : ",";
+      const headers = lines[0].split(separator).map((header) => header.trim().replace(/^\|+|\|+$/g, "").toLowerCase());
+      const usernameIndex = headers.findIndex((header) => ["username", "user_name", "handle", "profile_username"].includes(header));
+      if (usernameIndex >= 0) {
+        for (const line of lines.slice(1)) {
+          const cells = line.split(separator).map((cell) => cell.trim().replace(/^\|+|\|+$/g, ""));
+          if (cells[usernameIndex]) rows.push({ username: cells[usernameIndex] });
+        }
+      }
+    }
     return rows;
   }
   if (Array.isArray(value)) {
