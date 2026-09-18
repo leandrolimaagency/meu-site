@@ -53,6 +53,7 @@ async function fetchFollowingViaApify(username) {
 
   const run = await runResponse.json();
   const datasetId = run?.data?.defaultDatasetId;
+  const keyValueStoreId = run?.data?.defaultKeyValueStoreId;
   if (!datasetId) throw new Error('Apify dataset missing');
 
   const datasetResponse = await fetchWithTimeout(
@@ -62,9 +63,18 @@ async function fetchFollowingViaApify(username) {
   );
   if (!datasetResponse.ok) throw new Error('Apify dataset ' + datasetResponse.status);
   const items = await datasetResponse.json();
-  const followingRows = Array.isArray(items) ? items : [];
-  if (!followingRows.length) throw new Error('Apify dataset sem contas; itens=' + (Array.isArray(items) ? items.length : typeof items));
-  const following = (Array.isArray(items) ? items : []).map(normalizeNetworkUser).filter(Boolean);
+  let output = items;
+  if ((!Array.isArray(items) || items.length === 0) && keyValueStoreId) {
+    const outputResponse = await fetchWithTimeout(
+      'https://api.apify.com/v2/key-value-stores/' + keyValueStoreId + '/records/OUTPUT?disableRedirect=true',
+      { headers: { Authorization: 'Bearer ' + token, Accept: 'application/json' } },
+      30000
+    );
+    if (outputResponse.ok) output = await outputResponse.json();
+  }
+  const followingRows = Array.isArray(output) ? output : [];
+  if (!followingRows.length) throw new Error('Apify sem contas; itens=' + (Array.isArray(items) ? items.length : typeof items));
+  const following = followingRows.map(normalizeNetworkUser).filter(Boolean);
   return {
     username,
     fullName: '',

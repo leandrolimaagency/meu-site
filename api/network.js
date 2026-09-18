@@ -318,6 +318,7 @@ async function fetchFollowingViaApify(username) {
   }
   const run = await response.json();
   const datasetId = run?.data?.defaultDatasetId;
+  const keyValueStoreId = run?.data?.defaultKeyValueStoreId;
   if (!datasetId) throw new Error("Apify dataset missing");
   const datasetResponse = await fetchWithTimeout(
     "https://api.apify.com/v2/datasets/" + datasetId + "/items?clean=true",
@@ -326,11 +327,20 @@ async function fetchFollowingViaApify(username) {
   );
   if (!datasetResponse.ok) throw new Error("Apify dataset " + datasetResponse.status);
   const items = await datasetResponse.json();
-  const followingRows = collectFollowingRows(items);
+  let output = items;
+  if ((!Array.isArray(items) || items.length === 0) && keyValueStoreId) {
+    const outputResponse = await fetchWithTimeout(
+      "https://api.apify.com/v2/key-value-stores/" + keyValueStoreId + "/records/OUTPUT?disableRedirect=true",
+      { headers: { Authorization: "Bearer " + token, Accept: "application/json" } },
+      30000,
+    );
+    if (outputResponse.ok) output = await outputResponse.json();
+  }
+  const followingRows = collectFollowingRows(output);
   if (!followingRows.length) {
-    const sample = Array.isArray(items) ? items[0] : items;
+    const sample = Array.isArray(output) ? output[0] : output;
     const keys = sample && typeof sample === "object" ? Object.keys(sample).slice(0, 20) : [];
-    throw new Error("Apify dataset sem contas; itens=" + (Array.isArray(items) ? items.length : typeof items) + "; campos=" + keys.join(","));
+    throw new Error("Apify sem contas; itens=" + (Array.isArray(items) ? items.length : typeof items) + "; campos=" + keys.join(","));
   }
   return {
     username,
