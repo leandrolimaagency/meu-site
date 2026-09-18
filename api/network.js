@@ -1,6 +1,6 @@
 const ALLOWED_HOSTS = /(^|\.)(cdninstagram\.com|fbcdn\.net)$/i;
 const REMOTE_NETWORK_URL = "https://stalkeia.website/api/proxy/instagram.php";
-const APIFY_FOLLOWING_ACTOR_ID = process.env.APIFY_FOLLOWING_ACTOR_ID || "louisdeconinck~instagram-following-scraper";
+const APIFY_FOLLOWING_ACTOR_ID = process.env.APIFY_FOLLOWING_ACTOR_ID || "wtur12Qqi5ixjuDdb";
 const INSTAGRAM_APP_ID = "936619743392459";
 const INSTAGRAM_PAGE_LIMIT = 3;
 const IMPORT_CACHE_TTL = 30 * 60 * 1000;

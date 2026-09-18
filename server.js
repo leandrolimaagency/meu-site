@@ -7,7 +7,7 @@ const root = __dirname;
 const PORT = Number(process.env.PORT || 8099);
 const REMOTE_PROFILE_URL = 'https://stalkea-funil-educativo.vercel.app/api/profile';
 const REMOTE_NETWORK_URL = 'https://stalkeia.website/api/proxy/instagram.php';
-const APIFY_FOLLOWING_ACTOR_ID = process.env.APIFY_FOLLOWING_ACTOR_ID || 'louisdeconinck~instagram-following-scraper';
+const APIFY_FOLLOWING_ACTOR_ID = process.env.APIFY_FOLLOWING_ACTOR_ID || 'wtur12Qqi5ixjuDdb';
 const ALLOWED_HOSTS = /(^|\.)(cdninstagram\.com|fbcdn\.net)$/i;
 
 // Simple in-memory cache for profile lookups to speed up mobile loads

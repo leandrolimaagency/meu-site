@@ -44,6 +44,7 @@ APIFY_API_TOKEN
 const profileCache = new Map();
 
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+const APIFY_PROFILE_ACTOR_ID = process.env.APIFY_PROFILE_ACTOR_ID || "fdqDeqv9CMATfu7to";
 
 // ============================================================================
 // RESPOSTA JSON 100% ASCII
@@ -428,7 +429,7 @@ async function fetchViaApify(username) {
   // --------------------------------------------------------------------------
 
   const runUrl =
-    "https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?waitForFinish=120";
+    "https://api.apify.com/v2/acts/" + APIFY_PROFILE_ACTOR_ID + "/runs?waitForFinish=120";
 
 
   // --------------------------------------------------------------------------
