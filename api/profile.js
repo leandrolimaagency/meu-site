@@ -200,13 +200,16 @@ module.exports = async function handler(req, res) {
     let rawJson;
 
 
-    // ========================================================================
-    // APIFY
-    // ========================================================================
+    // Fontes publicas concorrem primeiro. O Actor fica como fallback para nao
+    // transformar cada primeira visita em um run lento e pago.
+    rawJson = await firstSuccessfulProfile([
+      () => fetchViaInstagram(username),
+      () => fetchViaProxyProfile(username),
+      () => fetchViaPublicPage(username),
+      () => fetchViaRapidApi(username),
+    ]);
 
-    // O Actor configurado e a fonte principal. Consultas sequenciais ao
-    // Instagram podem consumir todo o tempo disponivel da funcao Vercel.
-    if (process.env.APIFY_API_TOKEN) {
+    if (!rawJson && process.env.APIFY_API_TOKEN) {
       try {
         rawJson = await fetchViaApify(username);
         if (rawJson && rawJson.__status) rawJson = null;
@@ -214,23 +217,6 @@ module.exports = async function handler(req, res) {
         console.error("APIFY PROFILE ERROR:", error?.message || error);
         rawJson = null;
       }
-    }
-
-    if (!rawJson) {
-      rawJson = await fetchViaPublicPage(username);
-    }
-
-    if (!rawJson) {
-      rawJson = await fetchViaRapidApi(username);
-    }
-
-    if (!rawJson) {
-
-      // ======================================================================
-      // FALLBACK INSTAGRAM
-      // ======================================================================
-
-      rawJson = await fetchViaInstagram(username);
     }
 
 
@@ -386,6 +372,21 @@ module.exports = async function handler(req, res) {
 // ============================================================================
 // APIFY
 // ============================================================================
+
+async function firstSuccessfulProfile(loaders) {
+  const attempts = loaders.map((load) => Promise.resolve()
+    .then(load)
+    .then((value) => {
+      if (!value || value.__status) throw new Error("profile source unavailable");
+      return value;
+    }));
+
+  try {
+    return await Promise.any(attempts);
+  } catch (_) {
+    return null;
+  }
+}
 
 async function fetchViaApify(username) {
 
