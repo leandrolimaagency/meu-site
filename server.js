@@ -41,10 +41,6 @@ async function fetchFollowingViaApify(username) {
     monitorEnabled: false,
     maxTotalChargeUsd: 0.50,
   };
-  if (process.env.APIFY_INSTAGRAM_COOKIES) {
-    input.cookies = process.env.APIFY_INSTAGRAM_COOKIES;
-  }
-
   const runResponse = await fetchWithTimeout(runUrl, {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
