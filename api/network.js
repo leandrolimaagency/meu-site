@@ -312,7 +312,10 @@ async function fetchFollowingViaApify(username) {
     },
     50000,
   );
-  if (!response.ok) throw new Error("Apify run " + response.status);
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error("Apify run " + response.status + ": " + details.slice(0, 500));
+  }
   const run = await response.json();
   const datasetId = run?.data?.defaultDatasetId;
   if (!datasetId) throw new Error("Apify dataset missing");

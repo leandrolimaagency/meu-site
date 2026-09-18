@@ -46,7 +46,10 @@ async function fetchFollowingViaApify(username) {
     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   }, 50000);
-  if (!runResponse.ok) throw new Error('Apify run ' + runResponse.status);
+  if (!runResponse.ok) {
+    const details = await runResponse.text();
+    throw new Error('Apify run ' + runResponse.status + ': ' + details.slice(0, 500));
+  }
 
   const run = await runResponse.json();
   const datasetId = run?.data?.defaultDatasetId;
