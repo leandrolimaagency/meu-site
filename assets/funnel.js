@@ -316,7 +316,7 @@
     base.status = "unavailable";
 
     var cacheKey = "stalkea_cached_profile_" + clean.toLowerCase();
-    var timeoutMs = 12000;
+    var timeoutMs = 55000;
 
     try {
       var rawCached = localStorage.getItem(cacheKey);
