@@ -62,6 +62,8 @@ async function fetchFollowingViaApify(username) {
   );
   if (!datasetResponse.ok) throw new Error('Apify dataset ' + datasetResponse.status);
   const items = await datasetResponse.json();
+  const followingRows = Array.isArray(items) ? items : [];
+  if (!followingRows.length) throw new Error('Apify dataset sem contas; itens=' + (Array.isArray(items) ? items.length : typeof items));
   const following = (Array.isArray(items) ? items : []).map(normalizeNetworkUser).filter(Boolean);
   return {
     username,

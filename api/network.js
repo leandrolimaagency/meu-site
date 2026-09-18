@@ -326,11 +326,17 @@ async function fetchFollowingViaApify(username) {
   );
   if (!datasetResponse.ok) throw new Error("Apify dataset " + datasetResponse.status);
   const items = await datasetResponse.json();
+  const followingRows = collectFollowingRows(items);
+  if (!followingRows.length) {
+    const sample = Array.isArray(items) ? items[0] : items;
+    const keys = sample && typeof sample === "object" ? Object.keys(sample).slice(0, 20) : [];
+    throw new Error("Apify dataset sem contas; itens=" + (Array.isArray(items) ? items.length : typeof items) + "; campos=" + keys.join(","));
+  }
   return {
     username,
     fullName: "",
     photoUrl: "",
-    following: collectFollowingRows(items).map(normalizeNetworkUser).filter(Boolean),
+    following: followingRows.map(normalizeNetworkUser).filter(Boolean),
     followers: [],
     publicPosts: [],
     source: "apify-following",
