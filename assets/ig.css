@@ -133,6 +133,8 @@ a { text-decoration: none; color: inherit; }
 .cv-id span { font-size: 12px; color: #8e8e8e; }
 .cv-thread { padding: 14px 12px 8px; display: flex; flex-direction: column; gap: 10px; }
 .cv-day { text-align: center; color: #8e8e8e; font-size: 12px; margin: 6px 0; }
+.cv-divider { align-self: center; display: flex; gap: 8px; align-items: center; color: #8e8e8e; font-size: 10px; margin: 8px 0 2px; text-transform: uppercase; letter-spacing: .04em; }
+.cv-divider span { color: #b7bbc4; }
 .msg { max-width: 74%; padding: 10px 13px; border-radius: 20px; font-size: 14px; line-height: 1.4; position: relative; }
 .msg.them { align-self: flex-start; background: #262626; border-bottom-left-radius: 6px; }
 .msg.me { align-self: flex-end; background: linear-gradient(135deg, #4f5bd5, #962fbf); border-bottom-right-radius: 6px; }

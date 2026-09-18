@@ -149,6 +149,8 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       var navA = document.getElementById("nav-ava");
       navA.onerror = function () { navA.src = F.AVATAR_FALLBACK; };
       var cachedProfile = F.getCachedProfile ? F.getCachedProfile(username, 30 * 60 * 1000) : null;
+      var ownerDisplayName = (cachedProfile && (cachedProfile.displayName || cachedProfile.fullName)) || username;
+      var ownerFirstName = String(ownerDisplayName).trim().split(/\s+/)[0] || username;
       if (cachedProfile && cachedProfile.photoUrl) currentMainPhoto = cachedProfile.photoUrl;
       navA.src = currentMainPhoto;
 
@@ -324,7 +326,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
 
       function buildDMList(loadingOnly) {
         var messageTemplates = [
-          { preview: 'ana adivinha o que vc esqueceu aqui? kkkkk', time: 'Agora' },
+          { preview: ownerFirstName + ' adivinha o que vc esqueceu aqui? kkkkk', time: 'Agora' },
           { preview: 'Encaminhou um reel de jonas.milgrau', time: '33 min' },
           { preview: 'Blz depois a gente se fala', time: '2 h' },
           { preview: 'Reagiu com 👍 à sua mensagem', time: '6 h' },

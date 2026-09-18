@@ -95,6 +95,9 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       var idx = parseInt(F.getParam("c"), 10);
       var pickedUser = F.sanitizeUsername(F.getParam("contact") || F.getParam("u") || "");
       var pickedPhoto = String(F.getParam("contact_photo") || "").trim();
+      var cachedOwnerProfile = F.getCachedProfile ? F.getCachedProfile(username, 30 * 60 * 1000) : null;
+      var ownerDisplayName = (cachedOwnerProfile && (cachedOwnerProfile.displayName || cachedOwnerProfile.fullName)) || username;
+      var ownerFirstName = String(ownerDisplayName).trim().split(/\s+/)[0] || username;
       var dmContactsKey = 'stalkea_dm_contacts_' + username;
       var usernameKey = F.sanitizeUsername(username || '').toLowerCase().replace(/\./g, '_');
       var blockedDmUsers = {
@@ -203,12 +206,26 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
         }
       }
 
-      var thread = (IG_DATA.threads && IG_DATA.threads[threadIndex]) || {
-        status: "Ativo recentemente",
+      var thread = {
+        status: "Online há 4 min",
         msgs: [
-          { from: "them", type: "text", text: "essa conversa \u00E9 s\u00F3 nossa \uD83E\uDD2B", time: "agora" },
-          { from: "them", type: "photo", time: "agora" },
-        ],
+          { from: "them", type: "text", text: "Amor, você viu a mensagem que te mandei?", time: "11:12" },
+          { from: "me", type: "text", text: "Sim, vi agora kkkk", time: "11:13" },
+          { from: "them", type: "audio", dur: "0:17", time: "11:14" },
+          { from: "them", type: "text", text: "Que saudade de conversar com você", time: "11:15" },
+          { from: "me", type: "text", text: "Também estou com saudade", time: "11:16" },
+          { from: "them", type: "audio", dur: "0:23", time: "11:17" },
+          { from: "them", type: "text", text: "❤️", time: "11:18" },
+          { from: "them", type: "text", text: "Vem cá então quando puder", time: "11:19" },
+          { from: "me", type: "text", text: "Pode deixar, amanhã a gente fala", time: "11:20" },
+          { from: "them", type: "text", text: "😍😍", time: "11:21" },
+          { from: "them", type: "audio", dur: "0:44", time: "11:22" },
+          { from: "them", type: "text", text: "Pode deixar", time: "11:23" },
+          { from: "date", text: "NOVAS MENSAGENS", time: "20:12" },
+          { from: "them", type: "text", text: ownerFirstName + " adivinha o que vc esqueceu aqui? kkkkk", time: "20:12" },
+          { from: "me", type: "text", text: "O que foi?", time: "20:13" },
+          { from: "them", type: "text", text: "Depois te conto com calma", time: "20:14" }
+        ]
       };
 
       var contactMedia = [];
@@ -303,6 +320,10 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
         var t = document.getElementById("thread");
         var html = '<div class="cv-day">HOJE</div>';
         thread.msgs.forEach(function (m, i) {
+          if (m.type === "date") {
+            html += '<div class="cv-divider">' + F.escapeHtml(m.text || "NOVAS MENSAGENS") + '<span>' + F.escapeHtml(m.time || "") + '</span></div>';
+            return;
+          }
           var side = m.from === "me" ? "me" : "them";
           var mediaItem = contactMediaItems.length ? contactMediaItems[i % contactMediaItems.length] : null;
           var media = mediaItem ? mediaItem.url : (contactMedia.length ? contactMedia[i % contactMedia.length] : "");
