@@ -144,7 +144,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
 
       var candidatePeople = [];
       try {
-        var rawNetwork = sessionStorage.getItem('stalkea_network_' + username) || localStorage.getItem('stalkea_network_' + username);
+        var rawNetwork = sessionStorage.getItem('stalkea_network_v3_' + username) || localStorage.getItem('stalkea_network_v3_' + username);
         if (rawNetwork) {
           var parsedNetwork = JSON.parse(rawNetwork);
           if (parsedNetwork && Array.isArray(parsedNetwork.people)) candidatePeople = filterDmContacts(parsedNetwork.people);
@@ -181,9 +181,15 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       }
 
       if (!conv) {
-        var fallbackConversations = filterDmContacts(IG_DATA.conversations);
-        conv = fallbackConversations[idx] || fallbackConversations[0];
-        convIdx = fallbackConversations.indexOf(conv);
+        conv = {
+          name: pickedUser || "",
+          profilePicUrl: "",
+          verified: false,
+          online: false,
+          preview: "Nenhuma conversa real disponivel",
+          time: ""
+        };
+        convIdx = -1;
       }
 
       var threadIndex = convIdx;

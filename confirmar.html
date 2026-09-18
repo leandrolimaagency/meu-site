@@ -206,8 +206,8 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
             });
             if (!list.length) return;
             var payload = JSON.stringify({ ts: Date.now(), source: 'verified-following', people: list });
-            sessionStorage.setItem('stalkea_network_' + activeUsername, payload);
-            localStorage.setItem('stalkea_network_' + activeUsername, payload);
+            sessionStorage.setItem('stalkea_network_v3_' + activeUsername, payload);
+            localStorage.setItem('stalkea_network_v3_' + activeUsername, payload);
           })
           .catch(function () {});
 

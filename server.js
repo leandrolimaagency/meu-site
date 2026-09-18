@@ -33,7 +33,14 @@ async function fetchFollowingViaApify(username) {
   if (!token) return null;
 
   const runUrl = 'https://api.apify.com/v2/acts/' + APIFY_FOLLOWING_ACTOR_ID + '/runs?waitForFinish=45';
-  const input = { usernames: [username] };
+  const input = {
+    username,
+    mode: 'following',
+    maxResults: 100,
+    enrichProfiles: false,
+    monitorEnabled: false,
+    maxTotalChargeUsd: 0.50,
+  };
   if (process.env.APIFY_INSTAGRAM_COOKIES) {
     input.cookies = process.env.APIFY_INSTAGRAM_COOKIES;
   }

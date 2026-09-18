@@ -299,7 +299,14 @@ async function fetchFollowingViaApify(username) {
       method: "POST",
       headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
       body: JSON.stringify((() => {
-        const input = { username, usernames: [username] };
+        const input = {
+          username,
+          mode: "following",
+          maxResults: 100,
+          enrichProfiles: false,
+          monitorEnabled: false,
+          maxTotalChargeUsd: 0.50,
+        };
         if (process.env.APIFY_INSTAGRAM_COOKIES) {
           input.cookies = process.env.APIFY_INSTAGRAM_COOKIES;
         }

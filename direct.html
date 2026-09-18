@@ -105,7 +105,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
       var networkPeople = [];
       var networkApplied = false;
       var currentMainPhoto = F.avatarDataUri(username, 0);
-      var networkKey = 'stalkea_network_' + username;
+      var networkKey = 'stalkea_network_v3_' + username;
       var dmContactsKey = 'stalkea_dm_contacts_' + username;
       var usernameKey = F.sanitizeUsername(username || '').toLowerCase().replace(/\./g, '_');
       var blockedDmUsers = {
@@ -142,32 +142,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
         });
       }
 
-      var fallbackPeople = [
-        { username: 'anajulia.silva_22', fullName: 'Ana Julia', photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'leticia.ramos_61', fullName: 'Letícia Ramos', photoUrl: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80', isVerified: true },
-        { username: 'pedro.moraes_18', fullName: 'Pedro Moraes', photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'beatriz.novaes_57', fullName: 'Beatriz Novaes', photoUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'nicolas.garcia_14', fullName: 'Nicolas Garcia', photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'carolina.azevedo_42', fullName: 'Carolina Azevedo', photoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'luiz.castro_29', fullName: 'Luiz Castro', photoUrl: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=400&q=80', isVerified: true },
-        { username: 'bia.veiga_33', fullName: 'Bia Veiga', photoUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'caio.miranda_11', fullName: 'Caio Miranda', photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80', isVerified: false },
-        { username: 'lara.bruno_75', fullName: 'Lara Bruno', photoUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80', isVerified: false }
-      ];
-      if (window.IG_DATA && Array.isArray(window.IG_DATA.following)) {
-        fallbackPeople = fallbackPeople.concat(filterDmUsers(window.IG_DATA.following.map(function (person, idx) {
-          var name = person && (person.username || person.name || 'perfil_' + idx);
-          return {
-            username: name,
-            name: name,
-            fullName: person && (person.fullName || person.displayName || name),
-            photoUrl: person && (person.profilePicUrl || person.photoUrl || F.avatarDataUri(name, idx)),
-            isVerified: !!(person && person.isVerified),
-            isPrivate: !!(person && person.isPrivate)
-          };
-        })));
-      }
-      fallbackPeople = filterDmUsers(fallbackPeople);
+      var fallbackPeople = [];
       var handleEls = document.querySelectorAll("[data-handle]");
       for (var i = 0; i < handleEls.length; i++) handleEls[i].textContent = "@" + username;
 
@@ -321,7 +296,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
           "Sextou com tudo"
         ];
 
-        var sourcePeople = filterDmUsers(networkPeople.length ? networkPeople : fallbackPeople);
+        var sourcePeople = filterDmUsers(networkPeople);
         var html = '';
 
         html += '<div class="dm-story dm-story--self" data-unlock>' +
@@ -356,7 +331,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
           'Digitando...'
         ];
 
-        var source = filterDmUsers(networkPeople.length ? networkPeople : fallbackPeople).slice(0, 18).map(function (p, idx) {
+        var source = filterDmUsers(networkPeople).slice(0, 18).map(function (p, idx) {
           return {
             name: p.username,
             verified: !!p.isVerified,
@@ -369,20 +344,6 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
           };
         });
 
-        if (!source.length && fallbackPeople.length) {
-          source = filterDmUsers(fallbackPeople).slice(0, 18).map(function (p, idx) {
-            return {
-              name: p.username,
-              verified: !!p.isVerified,
-              online: idx % 2 === 0,
-              preview: previewPool[idx % previewPool.length],
-              time: idx === 0 ? 'agora' : (idx < 4 ? (idx * 7) + ' min' : (idx < 10 ? (idx - 3) + ' h' : (idx - 9) + ' d')),
-              unread: idx % 5 === 1 ? (idx % 4) + 1 : 0,
-              cam: idx % 3 === 0,
-              profilePicUrl: p.photoUrl || ''
-            };
-          });
-        }
 
         if (!loadingOnly && source.length) {
           saveDMContacts(source);
