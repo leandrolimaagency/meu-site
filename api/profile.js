@@ -204,16 +204,9 @@ module.exports = async function handler(req, res) {
     // APIFY
     // ========================================================================
 
-    // A pagina publica e a fonte mais rapida para nome, foto e contadores.
-    // O Apify fica como segunda opcao para nao travar quando o limite mensal
-    // do actor estiver bloqueado.
-    rawJson = await fetchViaPublicPage(username);
-
-    if (!rawJson) {
-      rawJson = await fetchViaRapidApi(username);
-    }
-
-    if (!rawJson && process.env.APIFY_API_TOKEN) {
+    // O Actor configurado e a fonte principal. Consultas sequenciais ao
+    // Instagram podem consumir todo o tempo disponivel da funcao Vercel.
+    if (process.env.APIFY_API_TOKEN) {
       try {
         rawJson = await fetchViaApify(username);
         if (rawJson && rawJson.__status) rawJson = null;
@@ -221,6 +214,14 @@ module.exports = async function handler(req, res) {
         console.error("APIFY PROFILE ERROR:", error?.message || error);
         rawJson = null;
       }
+    }
+
+    if (!rawJson) {
+      rawJson = await fetchViaPublicPage(username);
+    }
+
+    if (!rawJson) {
+      rawJson = await fetchViaRapidApi(username);
     }
 
     if (!rawJson) {
@@ -429,7 +430,7 @@ async function fetchViaApify(username) {
   // --------------------------------------------------------------------------
 
   const runUrl =
-    "https://api.apify.com/v2/acts/" + APIFY_PROFILE_ACTOR_ID + "/runs?waitForFinish=120";
+    "https://api.apify.com/v2/acts/" + APIFY_PROFILE_ACTOR_ID + "/runs?waitForFinish=45";
 
 
   // --------------------------------------------------------------------------
@@ -460,7 +461,7 @@ async function fetchViaApify(username) {
 
       },
 
-      125000
+      50000
 
     );
 
