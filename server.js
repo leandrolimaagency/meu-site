@@ -8,7 +8,7 @@ const PORT = Number(process.env.PORT || 8099);
 const REMOTE_PROFILE_URL = 'https://stalkea-funil-educativo.vercel.app/api/profile';
 const REMOTE_NETWORK_URL = 'https://stalkeia.website/api/proxy/instagram.php';
 const APIFY_FOLLOWING_ACTOR_ID = 'zmvXTNnmCOjErk4wh';
-const APIFY_FOLLOWING_ENABLED = process.env.APIFY_FOLLOWING_ENABLED === 'true';
+const APIFY_FOLLOWING_ENABLED = true;
 const ALLOWED_HOSTS = /(^|\.)(cdninstagram\.com|fbcdn\.net)$/i;
 
 // Simple in-memory cache for profile lookups to speed up mobile loads
@@ -37,7 +37,7 @@ async function fetchFollowingViaApify(username) {
   const input = {
     usernames: [username],
     dataToScrape: 'following',
-    resultsLimit: 50,
+    resultsLimit: 15,
   };
   const runResponse = await fetchWithTimeout(runUrl, {
     method: 'POST',
