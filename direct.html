@@ -240,7 +240,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
             applyNetworkPeople(people, photo);
             return;
           }
-          if (attempt < 6 && !networkApplied) {
+          if (attempt < 0 && !networkApplied) {
             var wait = [220, 420, 760, 1200, 2600, 4200][attempt] || 4200;
             setTimeout(function () {
               refreshNetworkWithRetry(photo, attempt + 1);

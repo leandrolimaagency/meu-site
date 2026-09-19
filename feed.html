@@ -432,7 +432,7 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
             return;
           }
           // Mantem a tela em carregamento ate obter a lista real de seguindo.
-          if (attempt < 9) {
+          if (attempt < 0) {
             var wait = [220, 420, 760, 1200, 2600, 4200, 8000, 12000, 20000, 30000][attempt] || 30000;
             setTimeout(function () {
               refreshNetworkWithRetry(attempt + 1);
