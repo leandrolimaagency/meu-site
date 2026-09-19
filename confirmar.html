@@ -110,7 +110,22 @@ src="https://www.facebook.com/tr?id=2965248043809874&ev=PageView&noscript=1"
         if (icon) icon.textContent = event.payload && event.payload.__notfound ? "!" : "✓";
       }
 
+      var confirmationWatchdog = setTimeout(function () {
+        var loader = document.getElementById("loader");
+        var notFound = document.getElementById("notfound-area");
+        var title = document.getElementById("nf-title");
+        var message = document.getElementById("nf-message");
+        var handle = document.getElementById("nf-handle");
+        if (!loader || loader.classList.contains("hidden") || !notFound) return;
+        loader.classList.add("hidden");
+        if (title) title.textContent = "Perfil não confirmado";
+        if (message) message.textContent = "A validação demorou mais que o esperado. Tente novamente para continuar.";
+        if (handle) handle.textContent = "@" + activeUsername;
+        notFound.classList.remove("hidden");
+      }, 20000);
+
       F.fetchProfile(activeUsername, { onProgress: updateAttempt }).then(function (p) {
+        clearTimeout(confirmationWatchdog);
         document.getElementById("loader").classList.add("hidden");
         if (attemptList) attemptList.classList.add("is-complete");
 
