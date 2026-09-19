@@ -502,7 +502,7 @@
     var initials = String(name || "?")
       .replace(/[^\p{L}\p{N} ]/gu, "")
       .trim().split(/\s+/).slice(0, 2)
-      .map(function (w) { return w.charAt(0).toUpperCase(); }).join("") || "?";
+      .map(function (w) { return Array.from(w)[0] || ""; }).join("").toUpperCase() || "?";
     var g = AVATAR_GRADS[(index || 0) % AVATAR_GRADS.length];
     var svg =
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
